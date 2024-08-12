@@ -1,0 +1,22 @@
+{
+  "name": "backend_tiktok",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/canh18377/tiktok.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/canh18377/tiktok/issues"
+  },
+  "homepage": "https://github.com/canh18377/tiktok#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

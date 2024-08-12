@@ -1,0 +1,36 @@
+.changeContent{
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 100px;
+    overflow-y: auto;
+    max-height: 694px;
+    scroll-snap-type:y mandatory;
+    margin-top: 10px;
+    margin-left: 10%;
+}
+.changeContent::-webkit-scrollbar{
+    height: 0;
+}
+.containerVideoIcon{
+    max-height: 680px;
+    display: flex;
+    box-sizing: border-box;
+    padding-bottom: 40px;
+
+}
+.video{
+    width: 350px;
+    height:650px;
+    border-radius: 20px;
+    scroll-snap-align:start;
+}
+.video:hover{
+    border-radius: 20px;
+    border: 1px solid darkslateblue;
+}
+
+.containerIcon{
+    margin-top: 100px;
+    margin-left: 10px;
+    
+}

@@ -1,0 +1,12 @@
+body,html{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+     background-color: white;
+    height: 100%;
+    width:100%;
+}
+body::-webkit-scrollbar{
+    height: 0;
+}

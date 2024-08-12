@@ -1,0 +1,16 @@
+.background{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgb(22, 17, 17);
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.viewProfile{
+    display: flex;
+    justify-content:space-between;
+    cursor: pointer;
+    font-size:medium;
+
+}
