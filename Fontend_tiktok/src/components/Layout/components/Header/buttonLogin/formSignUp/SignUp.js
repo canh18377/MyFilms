@@ -1,27 +1,36 @@
 import clsx from "clsx";
 import Styles from './formSignUp.module.scss'
-import { Button } from "antd";
+import { Button,message } from "antd";
 import { useState } from "react";
 function SignUp({setIsLogIn}) {
     const[account,setAccount]=useState({name:'',password:''})
     const handleSignUp=(event)=>{
             event.preventDefault();
-           fetch('http://localhost:8000/user',{
+           fetch('http://localhost:8080/account/create',{
             method:'POST',
             headers: { 'Content-Type': 'application/json' },
             body:JSON.stringify(account)
         })
-           .then((response)=>{alert('successfull')
-            return response.json() }) 
+           .then(response=>{
+                if(!response.ok){
+                    message.error('server bận ,vui lòng thử lại sau')
+                }   
+                return response.json()         
+             }) 
+             .then(data=>{
+                 if(data.success)
+                 { message.success(data.success)}
+                 else message.error(data.fail)
 
-           .then((data) => {
-            setAccount({name:'',password:''})
-            console.log(data)
-        }) 
-           .catch(error => console.error('Error:', error))}
+            })
+          
+           .catch(error => {
+            console.error('Fetch error:', error); 
+
+           })}
     return (  
         <div className={clsx(Styles.formSignUp)}>
-        <h1>SignUp</h1>
+         <h1>SignUp</h1>
          <form onSubmit={handleSignUp}>
         <div className={clsx(Styles.input)} >
         <input

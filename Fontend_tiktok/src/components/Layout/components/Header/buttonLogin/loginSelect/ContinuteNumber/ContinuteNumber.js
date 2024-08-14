@@ -1,25 +1,41 @@
 import clsx from "clsx";
 import Styles from './continuteNumber.module.scss'
-import { Button } from "antd";
-function ContinuteNumber({account,setaccount,setConfilmAccount,confilmAccount,setIsLogIn,setIsLoged,handleCloseModal}) {
+import { Button,message } from "antd";
+function ContinuteNumber({account,setaccount,setConfirmAccount,confirmAccount,setIsLogIn,setIsLoged,handleCloseModal}) {
     const HandleSubmit=(event)=>{
       event.preventDefault();
-      const APIUSer="http://localhost:8000/user"
-      fetch(APIUSer)
-       .then((response=>{return response.json()}))
-       .then(users=>{
-        setConfilmAccount(true)
-        const confilm=users.some(user=>{return user.name===account.name&&user.password===account.password})
-       if(!confilm)
-       {
-        setConfilmAccount(false)
-       }else{
-        setIsLoged(true)
-        handleCloseModal()
-       }
+      const APIUSer="http://localhost:8080/account"
+      fetch(APIUSer,{
+        method:'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify(account)
+
       })
-      .catch(err=>{console.log(err)})
-    }  
+       .then(response=>{
+          try {
+            if(!response.ok)
+            {
+              message.error('server bận , thử lại sau')
+            }
+            else return response.json()
+            .then(data=>{
+              if(data.Token){
+                 message.success(data.message)
+                 localStorage.setItem('jwtToken',data.Token)
+                 setIsLoged(true)
+                 setConfirmAccount(true)
+                 handleCloseModal(false)
+              }
+              else{
+                message.error('sai thông tin đăng nhập')
+                setConfirmAccount(false)
+              }
+            })
+          } catch (error) {
+            console.log(error)
+          }
+        })}
+
   return ( 
           <form onSubmit={HandleSubmit}>
             <div className={clsx(Styles.containerLogin)}>
@@ -35,12 +51,12 @@ function ContinuteNumber({account,setaccount,setConfilmAccount,confilmAccount,se
             className={clsx(Styles.account)} 
             placeholder="password" type="password" 
              onChange={(e)=>{setaccount({...account,password:e.target.value})}}/>
-             <p style={{color:'red',display:!confilmAccount?'block':'none'}}>Incorrect account or password</p>
+             <p style={{color:'red',display:!confirmAccount?'block':'none'}}>Incorrect account or password</p>
            
             </div>
             <div className={clsx(Styles.containerButton)}>
                <Button 
-            onClick={()=>setConfilmAccount(true)}
+            onClick={()=>setConfirmAccount(true)}
             className={clsx(Styles.button)}>
               Try again
             </Button>
@@ -48,7 +64,7 @@ function ContinuteNumber({account,setaccount,setConfilmAccount,confilmAccount,se
             <Button 
             htmlType={'submit'}
             className={clsx(Styles.button)}
-            loading={!confilmAccount}>
+            loading={!confirmAccount}>
               LogIn
             </Button>
             </div>
@@ -59,4 +75,4 @@ function ContinuteNumber({account,setaccount,setConfilmAccount,confilmAccount,se
             </form>)
 }
 
-export default ContinuteNumber;
+export default ContinuteNumber

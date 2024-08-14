@@ -9,7 +9,7 @@ import PagePersional from "../profile/PagePersional";
 function ButtonLogIn({isLoged,setIsLoged,isModelOpen,setIsModelOpen}){
     const [isOpenLogIn,setIsOpenLogIn]=useState(false)
     const [account,setaccount]=useState({name:'',password:''})
-    const [confilmAccount,setConfilmAccount]=useState(true)
+    const [confirmAccount,setConfirmAccount]=useState(true)
     const [isLogIn,setIsLogIn]=useState(true)
     const handleCloseModal =()=>{
       setIsOpenLogIn(false)
@@ -86,8 +86,8 @@ function ButtonLogIn({isLoged,setIsLoged,isModelOpen,setIsModelOpen}){
           setIsLoged={setIsLoged}
            account={account}
            setaccount={setaccount}
-           confilmAccount={confilmAccount}
-           setConfilmAccount={setConfilmAccount}
+           confirmAccount={confirmAccount}
+           setConfirmAccount={setConfirmAccount}
            setIsLogIn={setIsLogIn}/> :<SignUp setIsLogIn={setIsLogIn}/>}
   
           </Modal>
