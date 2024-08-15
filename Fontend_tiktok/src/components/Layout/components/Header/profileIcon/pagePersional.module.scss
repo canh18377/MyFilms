@@ -7,10 +7,15 @@
     justify-content: center;
     cursor: pointer;
 }
-.viewProfile{
+.iconBackground{
     display: flex;
-    justify-content:space-between;
+    flex-direction: column;
     cursor: pointer;
     font-size:medium;
 
 }
+.Logut,.openProfile{
+    display: flex;
+    justify-content: space-evenly;
+}
+

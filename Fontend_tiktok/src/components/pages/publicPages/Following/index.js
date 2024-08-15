@@ -1,8 +1,8 @@
-import Styles from '../video.module.scss'
+import Styles from '../../video.module.scss'
 import clsx from 'clsx';
 import {useState ,useContext} from 'react';
-import VideoFollowing from '../video/VideoFollowing';
-import { SharedData } from '../../Layout/DefaultLayout';
+import VideoFollowing from '../../video/VideoFollowing';
+import { SharedData } from '../../../Layout/DefaultLayout';
 import { HeartOutlined } from '@ant-design/icons';
 function Following() {
   const[selected,setSelected]=useState([])
@@ -24,8 +24,7 @@ function Following() {
       <VideoFollowing
    history={history}
    setVideos={setVideos}
-   contentSearch={contentSearch}
-   />
+   contentSearch={contentSearch}/>
       {
         
         videos.map((video)=>{

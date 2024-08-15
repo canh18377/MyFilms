@@ -1,8 +1,7 @@
-const { response } = require('express')
 const jwtActions = require('../../midderware/jwtActions')
-const user= require('../models/User')
+const user= require('../models/Account')
 class account{
-    async create(req,res){
+    async createAccount(req,res){
     try {
      const available = await user.findOne({name:req.body.name})
         if(available){
@@ -15,7 +14,7 @@ class account{
         console.log(error)
     }}
 
-    async verifyAccount(req,res){
+    async generateToken(req,res){
         const {name,password}=req.body
         try {
            const response= await  user.findOne({name:name})
@@ -27,7 +26,7 @@ class account{
                 res.json({message:'đăng nhập thành công',Token:Token})
               }
               else{
-                res.json({massage:'sai thông tin đăng nhập'}) }
+                res.json({message:'sai thông tin đăng nhập'}) }
 
            }
            else{res.json({message:"sai thông tin đăng nhập"})}

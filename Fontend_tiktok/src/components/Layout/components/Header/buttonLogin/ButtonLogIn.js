@@ -5,7 +5,7 @@ import Styles from './buttonlogin.module.scss'
 import Select from "./loginSelect/Select";
 import ContinuteNumber from "./loginSelect/ContinuteNumber/ContinuteNumber";
 import SignUp from "./formSignUp/SignUp";
-import PagePersional from "../profile/PagePersional";
+import PagePersional from "../profileIcon/PagePersional";
 function ButtonLogIn({isLoged,setIsLoged,isModelOpen,setIsModelOpen}){
     const [isOpenLogIn,setIsOpenLogIn]=useState(false)
     const [account,setaccount]=useState({name:'',password:''})

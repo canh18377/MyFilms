@@ -12,7 +12,7 @@ function Header() {
     const navigate =useNavigate()
     const {isLoged,setIsLoged,isModelOpen,setIsModelOpen,contentSearch,setContentSearch,history,setHistory}= useContext(SharedData);
     const handleNavigate=()=>{
-        navigate('/')
+       isLoged ?navigate('/yourhome'):navigate('/')
     }
 
     const handelClick=()=>{

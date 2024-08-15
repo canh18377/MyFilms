@@ -1,7 +1,9 @@
 import clsx from "clsx";
 import Styles from './continuteNumber.module.scss'
 import { Button,message } from "antd";
+import { useNavigate } from "react-router-dom";
 function ContinuteNumber({account,setaccount,setConfirmAccount,confirmAccount,setIsLogIn,setIsLoged,handleCloseModal}) {
+    const Navigate=useNavigate()
     const HandleSubmit=(event)=>{
       event.preventDefault();
       const APIUSer="http://localhost:8080/account"
@@ -22,13 +24,14 @@ function ContinuteNumber({account,setaccount,setConfirmAccount,confirmAccount,se
               if(data.Token){
                  message.success(data.message)
                  localStorage.setItem('jwtToken',data.Token)
+                 Navigate('/yourhome')
                  setIsLoged(true)
                  setConfirmAccount(true)
                  handleCloseModal(false)
+
               }
               else{
                 message.error('sai thông tin đăng nhập')
-                setConfirmAccount(false)
               }
             })
           } catch (error) {

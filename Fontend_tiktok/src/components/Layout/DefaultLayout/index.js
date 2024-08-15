@@ -8,7 +8,10 @@ function DefaultLayout({children}) {
   const [contentSearch,setContentSearch]=useState('')
   const [history,setHistory]=useState([])
   const [isModelOpen,setIsModelOpen]=useState(false)
-  const [isLoged,setIsLoged]=useState(false)
+  const [isLoged,setIsLoged]=useState(()=>{
+    const token = localStorage.getItem('jwtToken')
+      return !!token})
+
 
     return (  
       <SharedData.Provider value={{

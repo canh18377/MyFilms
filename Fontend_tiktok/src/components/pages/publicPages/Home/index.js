@@ -1,8 +1,8 @@
-import Styles from '../video.module.scss'
+import Styles from '../../video.module.scss'
 import clsx from 'clsx';
 import {useState ,useContext} from 'react';
-import VideoHome from '../video/VideoHome';
-import { SharedData } from '../../Layout/DefaultLayout';
+import VideoHome from '../../video/VideoHome';
+import { SharedData } from '../../../Layout/DefaultLayout';
 import { HeartOutlined } from '@ant-design/icons';
 function Home() {
   const[selected,setSelected]=useState([])
