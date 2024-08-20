@@ -1,0 +1,46 @@
+.yourProfile{
+    display: flex;
+    flex-direction: column;
+}
+.infoProfile{
+    display: flex;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    box-sizing: border-box;
+    padding-bottom: 100px;
+    margin-left: 130px;
+    margin-top: 40px;
+}
+.yourCaption{
+    margin-left: 20px;
+    font-size:small;
+    text-align:center;
+    color: rgb(196, 89, 89);
+        
+}
+.yourInfo{
+    margin-left: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;}
+    .modifyInfo{
+    display: flex;
+
+}
+.yourHistory{
+    display: flex;
+    justify-content: space-around;
+    height: 35px;
+}
+.videoCategory{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    height: 100%;
+    padding-bottom: 7px;
+    cursor: pointer;    
+
+}
+.underText{
+        border-bottom: 2px solid black;
+}
+
+
+

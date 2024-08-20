@@ -1,12 +1,12 @@
-import{HomePublic,FollowingPublic} from '../components/pages/publicPages'
-import{HomePrivate,FollowingPrivate,Upload,Profile} from '../components/pages/privatePages'
-
+import{Home,Following,Search} from '../components/pages/publicPages'
+import{Profile,Upload} from '../components/pages/privatePages'
 const publicRoutes =[
-    {path:'/',component:HomePublic},
-    {path:'/following',component:FollowingPublic},
+    {path:'/',component:Home},
+    {path:'/following',component:Following},
+    {path:'/search',component:Search},
+
 ]
 const privateRoutes=[
-{path:'/yourprofile',component:Profile},
-{path:'/yourhome',component:HomePrivate},
-{path:'/yourfollowing',component:FollowingPrivate},]
+{path:'/profile',component:Profile},
+{path:'/upload',component:Upload}]
 export {privateRoutes,publicRoutes}

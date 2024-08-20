@@ -9,7 +9,7 @@ function SideBar() {
     const navigate = useNavigate()
     const handleNavProfile=()=>{
           if(isLoged) 
-            {navigate('/yourprofile')}
+            {navigate('/profile')}
           else setIsModelOpen(true)}
     
     return ( 
@@ -17,12 +17,12 @@ function SideBar() {
          <SideBarChildren
        img='https://th.bing.com/th?id=OIP.Lu7gAIaRSIHFdyITaZU1swHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2'
        content='For You'
-       handle={()=>isLoged?navigate('/yourhome'):navigate('/')}
+       handle={()=>navigate('/')}
        />
        <SideBarChildren
        img='https://th.bing.com/th?id=OIP.4JeJ-eO-uwdcne5qA71YZgHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2'
        content='Following'
-       handle={()=>isLoged?navigate('/yourfollowing'):navigate('/following')
+       handle={()=>navigate('/following')
        }
        />
        <SideBarChildren

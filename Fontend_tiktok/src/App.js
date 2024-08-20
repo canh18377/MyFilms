@@ -2,7 +2,6 @@ import {BrowserRouter as Router,Route,Routes, Navigate} from 'react-router-dom'
 import { Fragment } from 'react';
 import { publicRoutes ,privateRoutes} from './routes';
 import DefaultLayout from './components/Layout/DefaultLayout';
-
 function App() {
   const ProtectedRoute =({Page})=>{
   const isLAuthenticated=()=>{
@@ -16,26 +15,7 @@ function App() {
     <Router>
       <div className='App'>
        <Routes>
-       {
-        publicRoutes.map((route,index)=>{
-          let Layout = DefaultLayout
-          if(route.layout)
-          {
-           Layout = route.layout
-          }
-          else if (route.layout===null)
-          {
-            Layout = Fragment
-          }
-          const Page =route.component
-          return <Route key={index} path={route.path} 
-          element={
-          <Layout>
-            <Page/>
-          </Layout>} />
-        })
-       }
-        {
+         {
           privateRoutes.map((route,index)=>{
              let Layout = DefaultLayout
           if(route.layout)
@@ -57,6 +37,26 @@ function App() {
                          } />
           })
         }
+       {
+        publicRoutes.map((route,index)=>{
+          let Layout = DefaultLayout
+          if(route.layout)
+          {
+           Layout = route.layout
+          }
+          else if (route.layout===null)
+          {
+            Layout = Fragment
+          }
+          const Page =route.component
+          return <Route key={index} path={route.path} 
+          element={
+          <Layout>
+            <Page/>
+          </Layout>} />
+        })
+       }
+       
        </Routes>
       </div>
     </Router>

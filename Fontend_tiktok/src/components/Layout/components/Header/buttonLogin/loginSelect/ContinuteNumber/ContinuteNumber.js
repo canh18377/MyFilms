@@ -28,7 +28,6 @@ function ContinuteNumber({account,setaccount,setConfirmAccount,confirmAccount,se
                  setIsLoged(true)
                  setConfirmAccount(true)
                  handleCloseModal(false)
-
               }
               else{
                 message.error('sai thông tin đăng nhập')

@@ -3,4 +3,23 @@
     height: 695px;
     width: 100vw;
     
+    
+}
+.content{
+    margin-top: 60px;
+    margin-left: 200px;
+    width:100vw;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+.header{
+    position: fixed;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+   border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+.header::-webkit-scrollbar{
+    height: 0;
 }

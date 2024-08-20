@@ -1,7 +1,12 @@
 .sideBar{
-    width: 244px;
+    width: 200px;
     height: 100%;
+    margin-top: 60px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+   position: fixed;
+   
 }
+
 .page{
     width: 224px;
     height: 48px;
@@ -9,6 +14,7 @@
     box-sizing: border-box;
     padding-top: 10px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .content{

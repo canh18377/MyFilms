@@ -1,0 +1,27 @@
+
+.formUpload {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    margin-top: 80px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.content{
+    display: flex;
+    flex-wrap: wrap;
+}
+.input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.inputUpload{
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 1px solid black;
+    margin-bottom: 10px;
+}

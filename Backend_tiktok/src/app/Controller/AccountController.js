@@ -1,13 +1,18 @@
 const jwtActions = require('../../midderware/jwtActions')
-const user= require('../models/Account')
+const Account= require('../models/Account')
+const Profile =require('../models/ProfileUser')
 class account{
     async createAccount(req,res){
     try {
-     const available = await user.findOne({name:req.body.name})
+     const available = await Account.findOne({name:req.body.name})
         if(available){
             res.json({fail:"tài khoản đã tồn tại"})
         }else{
-            await user.create({name:req.body.name,password:req.body.password})
+            const account =  await Account.create({name:req.body.name,password:req.body.password})
+            console.log(account)
+            const profile= await Profile.create({author:account._id})
+             console.log("profile:",profile)
+             
             res.json({success:"tạo thành công tài khoản "})
         }
     } catch (error) {
@@ -17,7 +22,7 @@ class account{
     async generateToken(req,res){
         const {name,password}=req.body
         try {
-           const response= await  user.findOne({name:name})
+           const response= await  Account.findOne({name:name})
            if(response)
            {
               if(response.password===password)

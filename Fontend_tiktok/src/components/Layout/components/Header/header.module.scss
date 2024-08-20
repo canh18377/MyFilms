@@ -1,13 +1,15 @@
 .header{
-    border-bottom: 1px solid rgb(129, 158, 174) ;
-    border-top: 1px solid rgb(129, 158, 174) ;
     height: 60px;
     padding: 0px 24px 0px 16px;
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-
+    box-shadow: 0  1px 0 rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+}
+.header::-webkit-scrollbar{
+    height: 0;
 }
 .iconHeader{
     width: 80px;
@@ -37,6 +39,10 @@
     background-color: transparent;
     border-right: 1px solid black;
    
+}
+.buttonUpload{
+    margin-top: 12px;
+
 }
 
 .sideAction{

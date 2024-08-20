@@ -5,6 +5,7 @@ import 'tippy.js/themes/light.css';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useState,useContext } from 'react';
+import { Button } from 'antd';
 import ButtonLogIn from './buttonLogin/ButtonLogIn';
 import { SharedData } from '../../DefaultLayout';
 function Header() {
@@ -12,7 +13,10 @@ function Header() {
     const navigate =useNavigate()
     const {isLoged,setIsLoged,isModelOpen,setIsModelOpen,contentSearch,setContentSearch,history,setHistory}= useContext(SharedData);
     const handleNavigate=()=>{
-       isLoged ?navigate('/yourhome'):navigate('/')
+       navigate('/')
+    }
+      const handleUpload=()=>{
+       isLoged ?navigate('/upload'):setIsModelOpen(true)
     }
 
     const handelClick=()=>{
@@ -24,8 +28,8 @@ function Header() {
     }
     const handleSearch=()=>{
         setHistory(prev=>[...history,contentSearch])
+        navigate('/search')
     }
-
 
     return ( 
         <div className={clsx(Styles.header)}>
@@ -38,23 +42,38 @@ function Header() {
             <Tippy 
           interactive={true}
           theme='light'
-          appendTo='parent'
+          appendTo={document.body}
           content={history.map((item,index)=>{
             return <p  key={index}>{item}</p>
           })} >
           <div className={clsx(Styles.searchHeader)} tabIndex={0}>
-        
-                <input 
+          
+          <form onSubmit={handleSearch}>
+             <input 
                 value={contentSearch}
                 onChange={e=>handelChange(e.target.value)} 
                 tabIndex={0}
                 className={clsx(Styles.inputHeader)} 
                 placeholder='Tìm kiếm'/>
-            <img onClick={()=>handleSearch()} className={clsx(Styles.iconSearch)} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBO2E0WkuYs5Gj0agmiQOb8bSAdB_qoR8qCkecApaAymFD3_Bj84ZWEX8cXQ&s"/>
-
+          </form>
+               
+            <img onClick={()=>handleSearch()} className={clsx(Styles.iconSearch)} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBO2E0WkuYs5Gj0agmiQOb8bSAdB_qoR8qCkecApaAymFD3_Bj84ZWEX8cXQ&s"/>        
             </div>
+            
             </Tippy>
+          { isLoged&& <div className={clsx(Styles.buttonUpload)}>
+                   <Button onClick={()=>handleUpload()} danger type='primary'>
+                    <span style={{marginTop:15}}>
+                     <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L6 8h4v6h4V8h4L12 2z"/>
+                    </svg>
+                    </span>
+                    <span >Upload</span>
+                    </Button>
+               </div>}
+
             <div className={clsx(Styles.sideAction)}>
+
                  <ButtonLogIn
                  isLoged={isLoged}
                  setIsLoged={setIsLoged}
@@ -64,6 +83,8 @@ function Header() {
                 <Tippy
                 interactive= {true}
                 theme='light'
+
+                appendTo={document.body}
                 content={
                     <div>
                         <h2 
