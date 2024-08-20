@@ -2,7 +2,6 @@ const express = require('express')
 const morgan = require('morgan')
 const path =require('path')
 const cors = require('cors');
-const object = require('./midderware/jwtActions')
 const router = require('./routes/index')
 const { engine } = require('express-handlebars')
 var bodyParser = require('body-parser')
