@@ -1,25 +1,31 @@
 import Header from "../components/Header";
 import SideBar from "./SideBar";
-import Styles from './defaultLayout.module.scss'
+import Styles from "./defaultLayout.module.scss";
 import clsx from "clsx";
-import { useState,createContext, useEffect } from "react";
-const  SharedData=createContext()
-function DefaultLayout({children}) {
-  const [contentSearch,setContentSearch]=useState('')
-  const [history,setHistory]=useState([])
-  const [isModelOpen,setIsModelOpen]=useState(false)
-  const [profileInfo,setProfileInfo]=useState(()=>{
-    const saveDataProfile = localStorage.getItem('profileInfo')
-    return saveDataProfile?JSON.parse(saveDataProfile):{profilePhoto:'',name:'',caption:''}
-  })
+import { useState, createContext, useEffect, Fragment } from "react";
+const SharedData = createContext();
+function DefaultLayout({ children }) {
+  const [contentSearch, setContentSearch] = useState("");
+  const [history, setHistory] = useState([]);
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [profileInfo, setProfileInfo] = useState(() => {
+    const saveDataProfile = localStorage.getItem("profileInfo");
+    return saveDataProfile
+      ? JSON.parse(saveDataProfile)
+      : { profilePhoto: "", name: "", caption: "", author: "" };
+  });
 
-  useEffect(()=>{localStorage.setItem('profileInfo',JSON.stringify(profileInfo))},[profileInfo])
-  const [isLoged,setIsLoged]=useState(()=>{
-  const token = localStorage.getItem('jwtToken')
-     return !!token})
+  useEffect(() => {
+    localStorage.setItem("profileInfo", JSON.stringify(profileInfo));
+  }, [profileInfo]);
+  const [isLoged, setIsLoged] = useState(() => {
+    const token = localStorage.getItem("jwtToken");
+    return !!token;
+  });
 
-    return (  
-      <SharedData.Provider value={{
+  return (
+    <SharedData.Provider
+      value={{
         contentSearch,
         setContentSearch,
         history,
@@ -29,23 +35,21 @@ function DefaultLayout({children}) {
         isLoged,
         setIsLoged,
         profileInfo,
-        setProfileInfo
-
-    }}>
-              <div className={clsx(Styles.DefaultLayout)}>
-          <div className={clsx(Styles.header)}> <Header/></div>
-         <div className={clsx(Styles.container)}>
-             <SideBar/>
-             <div className={clsx(Styles.content)}> 
-              {children} 
-             </div>
-         </div>
-
+        setProfileInfo,
+      }}
+    >
+      <div className={clsx(Styles.DefaultLayout)}>
+        <div className={clsx(Styles.header)}>
+          <Header />
+        </div>
+        <div className={clsx(Styles.container)}>
+          <SideBar />
+          <div className={clsx(Styles.content)}>{children}</div>
+        </div>
       </div>
-      
-      </SharedData.Provider>
-    );
+    </SharedData.Provider>
+  );
 }
 
 export default DefaultLayout;
-export {SharedData}
+export { SharedData };
