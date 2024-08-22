@@ -2,21 +2,27 @@ import Header from "../components/Header";
 import SideBar from "./SideBar";
 import Styles from "./defaultLayout.module.scss";
 import clsx from "clsx";
-import { useState, createContext, useEffect, Fragment } from "react";
+import { useState, createContext, useEffect } from "react";
 const SharedData = createContext();
 function DefaultLayout({ children }) {
   const [contentSearch, setContentSearch] = useState("");
   const [history, setHistory] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [profileInfo, setProfileInfo] = useState(() => {
-    const saveDataProfile = localStorage.getItem("profileInfo");
-    return saveDataProfile
-      ? JSON.parse(saveDataProfile)
-      : { profilePhoto: "", name: "", caption: "", author: "" };
+    const savedDataProfile = localStorage.getItem("profileInfo");
+    return savedDataProfile
+      ? JSON.parse(savedDataProfile)
+      : { profilePhoto: "", videos: "", name: "", caption: "", author: "" };
   });
-
+  console.log(profileInfo);
   useEffect(() => {
-    localStorage.setItem("profileInfo", JSON.stringify(profileInfo));
+    const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
+    if (profileInfoLocal) {
+      let author = profileInfoLocal.author;
+      if (profileInfo.author === author) {
+        localStorage.setItem("profileInfo", JSON.stringify(profileInfo));
+      }
+    }
   }, [profileInfo]);
   const [isLoged, setIsLoged] = useState(() => {
     const token = localStorage.getItem("jwtToken");

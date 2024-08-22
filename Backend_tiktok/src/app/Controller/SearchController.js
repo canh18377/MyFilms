@@ -1,4 +1,5 @@
 const Profile = require("../models/ProfileUser");
+const UserVideos = require("../models/UserVideos");
 class SearchController {
   async searchUsers(req, res) {
     console.log(req.params);
@@ -12,12 +13,20 @@ class SearchController {
       console.log(error);
     }
   }
-  async searchVideos(req, res) {
-    console.log(req.params.contentSearch);
-    console.log(req.params);
 
-    res.json("");
+  async searchVideos(req, res) {
+    console.log(req.params);
+    try {
+      const listVideos = await UserVideos.find({
+        nameVideo: { $regex: req.params.contentSearch, $options: "i" },
+      });
+      console.log("danh sach tim duoc:", listVideos);
+      res.json({ listVideos: listVideos });
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   async searchTopVideos(req, res) {
     console.log(req.params.contentSearch);
     console.log(req.params);

@@ -6,16 +6,17 @@ import Styles from "./profile.module.scss";
 import FormUpdate from "./formUpdate";
 import VideoUpLoaded from "./yourVideos/VideoUpLoaded";
 import LikedVideos from "./likedVideos/LikedVideo";
+import { useParams } from "react-router-dom";
 function Profile() {
+  const { author } = useParams();
   const [videoCategory, setVideoCategory] = useState("Videos");
   const { profileInfo, setProfileInfo } = useContext(SharedData);
   const [stateLoading, setStateLoading] = useState(true);
-  const Token = localStorage.getItem("jwtToken");
+  console.log("author", author);
   useEffect(() => {
-    fetch(`http://localhost:8080/profile`, {
+    fetch(`http://localhost:8080/profile/${author}`, {
       method: "GET",
       headers: {
-        authorization: ` ${Token}`,
         "Content-type": "application/json",
       },
     })
@@ -28,7 +29,6 @@ function Profile() {
       })
       .then((data) => {
         console.log("data profile", data);
-
         setProfileInfo(data);
         setStateLoading(false);
       })
@@ -36,9 +36,25 @@ function Profile() {
         message.error("server bận");
         console.log(err);
       });
+    return () => {
+      const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
+      setProfileInfo(profileInfoLocal);
+    };
   }, []);
   if (stateLoading) {
-    return <Progress percent={50} showInfo={true} />;
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "20%",
+        }}
+      >
+        <Progress type="dashboard" percent={50} showInfo={true} />
+        <p style={{ color: "red" }}> loading...</p>
+      </div>
+    );
   } else
     return (
       <div className={clsx(Styles.yourProfile)}>

@@ -20,6 +20,8 @@ function Header() {
     setContentSearch,
     history,
     setHistory,
+    setProfileInfo,
+    profileInfo,
   } = useContext(SharedData);
   const handleNavigate = () => {
     navigate("/");
@@ -95,6 +97,8 @@ function Header() {
           setIsLoged={setIsLoged}
           isModelOpen={isModelOpen}
           setIsModelOpen={setIsModelOpen}
+          profileInfo={profileInfo}
+          setProfileInfo={setProfileInfo}
         />
 
         <Tippy

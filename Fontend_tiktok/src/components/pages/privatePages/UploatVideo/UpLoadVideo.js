@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
 import Styles from "./upload.module.scss";
 import { Checkbox, message, Radio } from "antd";
@@ -34,6 +34,8 @@ const UploadVideo = () => {
       });
     console.log(profileInfo.author);
   };
+  useEffect(() => URL.revokeObjectURL(previewVideo), [previewVideo]);
+
   const handleChecked = (e) => {
     setGenre((pre) => {
       if (genres.includes(e.target.value)) {

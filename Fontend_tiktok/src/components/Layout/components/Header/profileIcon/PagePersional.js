@@ -1,13 +1,12 @@
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import clsx from "clsx";
-import { useContext } from "react";
-import { SharedData } from "../../../DefaultLayout";
+import { memo } from "react";
 import Styles from "./pagePersional.module.scss";
 import Tippy from "@tippyjs/react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
-function PagePersional() {
-  const { setIsLoged, profileInfo } = useContext(SharedData);
+const { profilePhoto } = JSON.parse(localStorage.getItem("profileInfo"));
+function PagePersional({ setIsLoged, profileInfo }) {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
@@ -28,7 +27,9 @@ function PagePersional() {
           <div className={clsx(Styles.iconBackground)}>
             <div className={clsx(Styles.openProfile)}>
               <UserOutlined style={{ marginRight: 7 }} />
-              <p onClick={() => navigate("/profile")}>View Profile</p>
+              <p onClick={() => navigate(`/profile/${profileInfo.author}`)}>
+                View Profile
+              </p>
             </div>
             <div className={clsx(Styles.Logut)}>
               <div
@@ -46,10 +47,10 @@ function PagePersional() {
           </div>
         }
       >
-        <Avatar src={profileInfo.profilePhoto} size={40} />
+        <Avatar src={profilePhoto && profilePhoto.path} size={40} />
       </Tippy>
     </div>
   );
 }
 
-export default PagePersional;
+export default memo(PagePersional);

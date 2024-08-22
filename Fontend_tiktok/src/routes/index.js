@@ -6,7 +6,7 @@ const publicRoutes = [
   { path: "/search", component: Search },
 ];
 const privateRoutes = [
-  { path: "/profile", component: Profile },
+  { path: "/profile/:author", component: Profile },
   { path: "/upload", component: Upload },
 ];
 export { privateRoutes, publicRoutes };

@@ -10,6 +10,8 @@ function ContinuteNumber({
   setIsLogIn,
   setIsLoged,
   handleCloseModal,
+  setprofileInfo,
+  profileInfo,
 }) {
   const Navigate = useNavigate();
   const HandleSubmit = (event) => {
@@ -26,12 +28,18 @@ function ContinuteNumber({
         } else
           return response.json().then((data) => {
             if (data.Token) {
+              console.log(data.profileInfo.profilePhoto);
               message.success(data.message);
               localStorage.setItem("jwtToken", data.Token);
               Navigate("/");
               setIsLoged(true);
               setConfirmAccount(true);
               handleCloseModal(false);
+              setprofileInfo(data.profileInfo);
+              localStorage.setItem(
+                "profileInfo",
+                JSON.stringify(data.profileInfo)
+              );
             } else {
               message.error("sai thông tin đăng nhập");
             }

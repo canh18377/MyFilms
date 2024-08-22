@@ -6,12 +6,13 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
   const Token = localStorage.getItem("jwtToken");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState("");
+  const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
+
   const handleSubmit = () => {
     let formData = new FormData();
     formData.append("profilePhoto", profileInfo.profilePhoto);
     formData.append("caption", profileInfo.caption);
     formData.append("name", profileInfo.name);
-
     setIsModalOpen(false);
     fetch("http://localhost:8080/profile/update", {
       method: "POST",
@@ -102,7 +103,9 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
           </div>
         </form>
       </Modal>
-      <Button onClick={() => setIsModalOpen(true)}>sửa thông tin</Button>
+      {profileInfoLocal.author === profileInfo.author && (
+        <Button onClick={() => setIsModalOpen(true)}>sửa thông tin</Button>
+      )}
     </div>
   );
 }

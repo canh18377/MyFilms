@@ -6,15 +6,11 @@ class ProfileController {
   async index(req, res) {
     console.log("req::::", req);
     try {
-      const response = await jwtActions.verifyToken(req.headers.authorization);
-      try {
-        const account = await Account.findOne({ name: response.name });
-        const profile = await Profile.findOne({ author: account._id });
-        console.log("profile", profile);
-        res.json(profile);
-      } catch (error) {
-        console.log(error);
-      }
+      const profile = await Profile.findOne({
+        author: req.params.author,
+      });
+      console.log("profile", profile);
+      res.json(profile);
     } catch (error) {
       console.log(error);
     }

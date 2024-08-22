@@ -5,15 +5,16 @@ import SearchVideos from "./searchVideos/SearchVideos";
 import SearchUsers from "./searchUsers/SearchUsers";
 import { SharedData } from "../../../Layout/DefaultLayout";
 function Search() {
+  const [status, setStatus] = useState(true);
+  const { contentSearch } = useContext(SharedData);
   const [categorySearch, setCategorySearch] = useState("Users");
+  console.log(contentSearch);
   let Videos;
   if (categorySearch === "Users") {
     Videos = SearchUsers;
   } else if (categorySearch === "Videos") {
     Videos = SearchVideos;
   }
-  const { contentSearch } = useContext(SharedData);
-  console.log("contenSearch:", contentSearch);
   return (
     <div className={clsx(Styles.searchPage)}>
       <div className={clsx(Styles.Header)}>
@@ -43,7 +44,9 @@ function Search() {
         </h3>
       </div>
       {contentSearch && (
-        <div className={clsx(Styles.content)}>{<Videos />}</div>
+        <div className={clsx(Styles.content)}>
+          {<Videos status={status} setStatus={setStatus} />}
+        </div>
       )}
     </div>
   );
