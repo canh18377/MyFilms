@@ -56,18 +56,16 @@ function Searchvideos({ status, setStatus }) {
         return (
           <div key={index} className={clsx(Styles.containerVideo)}>
             <video src={video.path} className={clsx(Styles.video)} />
-            <p>{video.nameVideo}</p>
-            {
-              <div style={{ display: "flex" }}>
-                {video.genres.map((genre, index) => {
-                  return (
-                    <p style={{ fontSize: "small" }} key={index}>
-                      {genre}
-                    </p>
-                  );
-                })}
-              </div>
-            }
+            <div className={clsx(Styles.infoVideo)}>
+              <u style={{ fontSize: "small" }}>@{video.nameVideo}</u>
+              {
+                <div className={clsx(Styles.genre)}>
+                  {video.genres.map((genre, index) => {
+                    return <p key={index}>{<u>#{genre}</u>}</p>;
+                  })}
+                </div>
+              }
+            </div>
           </div>
         );
       })}

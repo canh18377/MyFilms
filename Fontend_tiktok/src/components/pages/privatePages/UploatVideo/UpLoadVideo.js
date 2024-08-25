@@ -9,7 +9,7 @@ const UploadVideo = () => {
     nameVideo: "",
     limitedAge: "0-9",
   });
-  const [genres, setGenre] = useState(["video"]);
+  const [genres, setGenre] = useState(["Video"]);
   const [previewVideo, setPreviewVideo] = useState("");
   const { profileInfo } = useContext(SharedData);
   const handleUpload = () => {
@@ -34,7 +34,6 @@ const UploadVideo = () => {
       });
     console.log(profileInfo.author);
   };
-  useEffect(() => URL.revokeObjectURL(previewVideo), [previewVideo]);
 
   const handleChecked = (e) => {
     setGenre((pre) => {
@@ -56,7 +55,6 @@ const UploadVideo = () => {
     }
   }
   const Category = [
-    "video",
     "Video âm nhạc",
     "Phim ngắn",
     "Phim tài liệu",
@@ -78,7 +76,9 @@ const UploadVideo = () => {
     "Video thể hình",
     "Video truyền cảm hứng",
   ];
-
+  useEffect(() => {
+    return () => URL.revokeObjectURL(previewVideo);
+  });
   const age = ["0-9", "10-16", "trên 18", "tất cả các độ tuổi"];
   return (
     <div className={clsx(Styles.formUpload)}>
@@ -98,7 +98,12 @@ const UploadVideo = () => {
               </div>
               {infoVideoUpload.fileVideo && (
                 <video
-                  style={{ height: 200, margin: 5 }}
+                  style={{
+                    background: "black",
+                    height: 200,
+                    minWidth: 200,
+                    margin: 5,
+                  }}
                   controls
                   muted
                   autoPlay={true}

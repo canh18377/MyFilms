@@ -1,12 +1,17 @@
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import clsx from "clsx";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import Styles from "./pagePersional.module.scss";
 import Tippy from "@tippyjs/react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
-const { profilePhoto } = JSON.parse(localStorage.getItem("profileInfo"));
+let profilePhoto =
+  JSON.parse(localStorage.getItem("profileInfo")) &&
+  JSON.parse(localStorage.getItem("profileInfo")).profilePhoto;
 function PagePersional({ setIsLoged, profileInfo }) {
+  useEffect(() => {
+    profilePhoto = JSON.parse(localStorage.getItem("profileInfo")).profilePhoto;
+  }, [localStorage.getItem("profileInfo").profileInfo]);
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");

@@ -4,16 +4,25 @@
 }
 .containerVideo {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  height: 400px;
+  height: 350px;
   width: 180px;
   margin: 10px;
   border-radius: 10px;
-  text-align: center;
 }
 .video {
   height: 300px;
   width: 170px;
-  overflow: hidden;
   background-color: rgb(32, 6, 6);
   border-radius: 10px;
+  margin-left: 5px;
+}
+.genre {
+  font-size: xx-small;
+  display: flex;
+  overflow: hidden;
+  overflow-y: auto;
+  height: 20px;
+}
+.genre::-webkit-scrollbar {
+  height: 0;
 }

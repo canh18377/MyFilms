@@ -2,10 +2,9 @@ import { useEffect, memo, useState } from "react";
 import { message } from "antd";
 import clsx from "clsx";
 import Styles from "./videoProfile.module.scss";
-
+import ReactPlayer from "react-player";
 function VideoUpLoaded({ author }) {
   const [videos, setVideos] = useState([]);
-  console.log("author:", author);
   useEffect(() => {
     fetch(`http://localhost:8080/profile/videos/${author}`, {
       method: "GET",
@@ -29,12 +28,16 @@ function VideoUpLoaded({ author }) {
     return <p>loading...</p>;
   }
   return (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
+    <div className={clsx(Styles.containerVideo)}>
       {videos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
-            <video src={video.path} className={clsx(Styles.videoProfile)} />
-          </div>
+          <ReactPlayer
+            key={index}
+            width={100}
+            height={100}
+            style={{}}
+            url={video.path}
+          />
         );
       })}
     </div>

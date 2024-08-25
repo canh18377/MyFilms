@@ -14,8 +14,7 @@ function SignUp({ setIsLogIn }) {
       .then((response) => {
         if (!response.ok) {
           message.error("server bận ,vui lòng thử lại sau");
-        }
-        return response.json();
+        } else return response.json();
       })
       .then((data) => {
         if (data.success) {
