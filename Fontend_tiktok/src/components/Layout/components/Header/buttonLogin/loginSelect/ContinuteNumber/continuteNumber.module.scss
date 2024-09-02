@@ -1,46 +1,42 @@
-
 .content {
-    display: flex;
-    margin: auto;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  margin: auto;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .containerLogin {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    font-family: 'Times New Roman', Times, serif;
-    color: rgb(149, 75, 101);
-    text-align: center;
-
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-family: "Times New Roman", Times, serif;
+  color: rgb(149, 75, 101);
+  text-align: center;
 }
 .account {
-    margin: 5px;
-    height: 30px;
-    border: none;
-    outline: none;
+  margin: 5px;
+  height: 30px;
+  border: none;
+  outline: none;
 }
 
 .account:hover {
-    border-radius: 10px;
-    border: 1px solid darkgray;
-
+  border-radius: 10px;
+  border: 1px solid darkgray;
 }
 
 .containerButton {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-around;
-
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
 }
 
 .button {
-    width: 86px;
-    background-color: rgb(254, 44, 85);
-    height: 30px;
-    border: none;
-    border-radius: 120px;
+  width: 90%;
+  background-color: rgb(254, 44, 85);
+  height: 30px;
+  border: none;
+  border-radius: 120px;
 }
 
 .button:hover {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }

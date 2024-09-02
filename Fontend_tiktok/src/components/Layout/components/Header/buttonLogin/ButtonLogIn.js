@@ -16,7 +16,6 @@ function ButtonLogIn({
 }) {
   const [isOpenLogIn, setIsOpenLogIn] = useState(false);
   const [account, setaccount] = useState({ name: "", password: "" });
-  const [confirmAccount, setConfirmAccount] = useState(true);
   const [isLogIn, setIsLogIn] = useState(true);
   const handleCloseModal = () => {
     setIsOpenLogIn(false);
@@ -76,13 +75,20 @@ function ButtonLogIn({
             </div>
             <footer>
               <p>
-                By continuing with an account located in Vietnam, you agree to
+                By continuing with an account located in Vietnam, yoem agree to
                 our Terms of Service and acknowledge that you have read our
                 Privacy Policy.
               </p>
             </footer>
             <hr />
-            Don’t have an account?<a style={{ color: "red" }}> Sign up</a>
+            Don’t have an account?
+            <em
+              onClick={() => setIsLogIn(false)}
+              style={{ cursor: "pointer", color: "red" }}
+            >
+              {" "}
+              Sign up
+            </em>
           </div>
         </Modal>
         <Modal
@@ -100,8 +106,6 @@ function ButtonLogIn({
               setIsLoged={setIsLoged}
               account={account}
               setaccount={setaccount}
-              confirmAccount={confirmAccount}
-              setConfirmAccount={setConfirmAccount}
               setIsLogIn={setIsLogIn}
             />
           ) : (

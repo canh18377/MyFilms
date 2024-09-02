@@ -1,19 +1,22 @@
 .container {
   height: 100%;
-  margin-left: 20%;
+  margin-left: 10%;
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
   scroll-snap-type: y mandatory; /* Kích hoạt chế độ snap cuộn theo trục y */
 }
+.containerVideo {
+  height: auto;
+  display: flex;
+}
 .content {
   width: 292px;
   height: 518px;
-  margin: 10% 0 20% 0;
+  margin: 15% 0 20% 0;
   border-radius: 40px;
-  box-sizing: border-box;
   overflow: hidden;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   box-shadow: 0 -1px 0 black;
 }
 
@@ -21,14 +24,39 @@
   height: 0;
 }
 
+.actionItemContainer {
+  display: grid;
+  grid-column: 1fr;
+  grid-template-rows: 33% 10% 5%;
+  margin-left: 2%;
+  align-items: center;
+}
+.commentVideo,
+.heartVideo {
+  font-size: 27px;
+  cursor: pointer;
+}
+.likedVideo {
+  color: red;
+}
 @media screen and (min-width: 768px) {
   .container {
     width: 600px;
+    padding-bottom: 60%;
   }
 }
-@media screen and (max-width: 425px) and (min-width: 375px) {
+@media screen and (max-width: 575px) {
   .content {
-    width: 50%;
-    height: 300px;
+    width: 54%;
+    height: 80%;
+  }
+  .actionItemContainer {
+    font-size: 10px;
+    grid-template-rows: 40% 10% 5%;
+  }
+  .commentVideo,
+  .heartVideo {
+    font-size: 20px;
+    margin-top: 25px;
   }
 }

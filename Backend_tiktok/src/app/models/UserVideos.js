@@ -10,7 +10,8 @@ const UserVideos = new Schema(
     limitedAge: { type: String },
     genres: { type: [String], default: [] },
     author: { type: Schema.Types.ObjectId, ref: "Profile" },
-    //likes: { type: Int16Array, default: 0 },
+    likes: { type: Number, default: 0 },
+    deleteAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

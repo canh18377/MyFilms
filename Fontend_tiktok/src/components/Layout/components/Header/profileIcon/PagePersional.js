@@ -1,17 +1,19 @@
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import clsx from "clsx";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import Styles from "./pagePersional.module.scss";
 import Tippy from "@tippyjs/react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
-let profilePhoto =
-  JSON.parse(localStorage.getItem("profileInfo")) &&
-  JSON.parse(localStorage.getItem("profileInfo")).profilePhoto;
 function PagePersional({ setIsLoged, profileInfo }) {
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    profilePhoto = JSON.parse(localStorage.getItem("profileInfo")).profilePhoto;
-  }, [localStorage.getItem("profileInfo").profileInfo]);
+    const profilePhoto =
+      JSON.parse(localStorage.getItem("profileInfo")) &&
+      JSON.parse(localStorage.getItem("profileInfo")).profilePhoto;
+    profileInfo.profilePhoto = profilePhoto;
+    setIsLoading(false);
+  }, []);
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
@@ -20,6 +22,7 @@ function PagePersional({ setIsLoged, profileInfo }) {
     navigate("/");
   };
   console.log("profileInfo", profileInfo);
+  if (isLoading) return;
   return (
     <div>
       <Tippy
@@ -52,7 +55,10 @@ function PagePersional({ setIsLoged, profileInfo }) {
           </div>
         }
       >
-        <Avatar src={profilePhoto && profilePhoto.path} size={40} />
+        <Avatar
+          src={profileInfo.profilePhoto && profileInfo.profilePhoto.path}
+          size={40}
+        />
       </Tippy>
     </div>
   );

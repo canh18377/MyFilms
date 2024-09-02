@@ -18,12 +18,14 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post(
+router.put(
   "/update",
   upload.single("profilePhoto"),
   ProfileController.updateProflie
 );
 router.get("/videos/:author", ProfileController.getVideo);
+router.get("/likedVideos/:author", ProfileController.getLikedVideos);
 router.get("/:author", ProfileController.index);
-
+router.delete("/deleteVideo", ProfileController.deleteVideo);
+router.put("/updateVideo", ProfileController.updateVideo);
 module.exports = router;

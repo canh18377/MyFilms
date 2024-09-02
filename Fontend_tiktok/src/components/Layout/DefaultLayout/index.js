@@ -14,7 +14,6 @@ function DefaultLayout({ children }) {
       ? JSON.parse(savedDataProfile)
       : { profilePhoto: "", videos: "", name: "", caption: "", author: "" };
   });
-  console.log(profileInfo);
   useEffect(() => {
     const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     if (profileInfoLocal) {

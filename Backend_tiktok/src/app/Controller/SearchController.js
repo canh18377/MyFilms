@@ -19,6 +19,7 @@ class SearchController {
     try {
       const listVideos = await UserVideos.find({
         nameVideo: { $regex: req.params.contentSearch, $options: "i" },
+        deleteAt: null,
       });
       console.log("danh sach tim duoc:", listVideos);
       res.json({ listVideos: listVideos });
@@ -28,10 +29,19 @@ class SearchController {
   }
 
   async searchTopVideos(req, res) {
-    console.log(req.params.contentSearch);
     console.log(req.params);
-
-    res.json("");
+    try {
+      const listVideos = await UserVideos.find({
+        nameVideo: { $regex: req.params.contentSearch, $options: "i" },
+        deleteAt: null,
+      })
+        .sort({ likes: -1 })
+        .limit(10);
+      console.log("danh sach tim duoc:", listVideos);
+      res.json({ listVideos: listVideos });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

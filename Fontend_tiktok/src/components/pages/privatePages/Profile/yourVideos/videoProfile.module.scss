@@ -1,7 +1,44 @@
-.containerVideo {
+.containerVideos {
   display: flex;
-  position: fixed;
-  overflow: hidden;
   height: 100vh;
+  flex-wrap: wrap;
+  gap: 1%;
+}
+.containerVideo {
+  background-color: rgb(33, 32, 30);
+  width: 18%;
+  height: 30%;
+  position: relative;
+}
+.update_deleteVideo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+.genre {
+  font-size: xx-small;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+.genre::-webkit-scrollbar {
+  height: 0;
+}
+.video {
+  height: 100%;
+  width: 100%;
+}
+.videoInfo {
+  height: 70px;
   overflow-y: auto;
+}
+.videoInfo::-webkit-scrollbar {
+  height: 0;
+}
+@media screen and (max-width: 768px) {
+  .containerVideo {
+    width: 111.79px;
+    height: 199px;
+  }
 }

@@ -5,13 +5,16 @@ import "tippy.js/themes/light.css";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import { TikTokOutlined, MoreOutlined } from "@ant-design/icons";
-import { useState, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 import { Button } from "antd";
 import ButtonLogIn from "./buttonLogin/ButtonLogIn";
 import { SharedData } from "../../DefaultLayout";
 function Header() {
   const [backGroundColor, setBackGroundColor] = useState(false);
   const navigate = useNavigate();
+  const inputSearchRef = useRef();
+  console.log(inputSearchRef);
+
   const {
     isLoged,
     setIsLoged,
@@ -58,12 +61,19 @@ function Header() {
           return <p key={index}>{item}</p>;
         })}
       >
-        <div className={clsx(Styles.searchHeader)} tabIndex={0}>
+        <div
+          onClick={() => {
+            inputSearchRef.current.focus();
+          }}
+          className={clsx(Styles.searchHeader)}
+          tabIndex={0}
+        >
           <form onSubmit={handleSearch}>
             <input
               value={contentSearch}
               onChange={(e) => storeContentSearch(e.target.value)}
               tabIndex={0}
+              ref={inputSearchRef}
               className={clsx(Styles.inputHeader)}
               placeholder="Tìm kiếm"
             />

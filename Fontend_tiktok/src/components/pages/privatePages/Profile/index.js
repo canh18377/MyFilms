@@ -5,8 +5,9 @@ import clsx from "clsx";
 import Styles from "./profile.module.scss";
 import FormUpdate from "./formUpdate";
 import VideoUpLoaded from "./yourVideos/VideoUpLoaded";
-import LikedVideos from "./likedVideos/LikedVideo";
+import LikedVideos from "./yourVideos/LikedVideos";
 import { useParams } from "react-router-dom";
+
 function Profile() {
   const { author } = useParams();
   const [videoCategory, setVideoCategory] = useState("Videos");
@@ -59,8 +60,8 @@ function Profile() {
     return (
       <div className={clsx(Styles.yourProfile)}>
         <div className={clsx(Styles.infoProfile)}>
-          <div>
-            <Avatar size={200} src={profileInfo.profilePhoto.path} />
+          <div className={clsx(Styles.avatarPhoto_Cap)}>
+            <Avatar size={160} src={profileInfo.profilePhoto.path} />
             <p className={clsx(Styles.yourCaption)}>{profileInfo.caption}</p>
           </div>
 
@@ -108,7 +109,7 @@ function Profile() {
             {videoCategory === "Videos" ? (
               <VideoUpLoaded author={profileInfo.author} />
             ) : (
-              <LikedVideos />
+              <LikedVideos author={profileInfo.author} />
             )}
           </div>
         </div>

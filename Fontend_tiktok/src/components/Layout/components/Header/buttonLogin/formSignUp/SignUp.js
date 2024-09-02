@@ -2,29 +2,28 @@ import clsx from "clsx";
 import Styles from "./formSignUp.module.scss";
 import { Button, message } from "antd";
 import { useState } from "react";
+
 function SignUp({ setIsLogIn }) {
   const [account, setAccount] = useState({ name: "", password: "" });
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
-    fetch("http://localhost:8080/account/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(account),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          message.error("server bận ,vui lòng thử lại sau");
-        } else return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          message.success(data.success);
-        } else message.error(data.fail);
-      })
-
-      .catch((error) => {
-        console.error("Fetch error:", error);
+    try {
+      const response = await fetch("http://localhost:8080/account/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(account),
       });
+      if (!response.ok) {
+        return message.error("server bận");
+      }
+      const data = await response.json();
+      if (data.success) {
+        message.success(data.success);
+      } else message.error(data.fail);
+    } catch (error) {
+      console.log(error);
+      message.error("Đã xảy ra lỗi, vui lòng thử lại sau.");
+    }
   };
   return (
     <div className={clsx(Styles.formSignUp)}>

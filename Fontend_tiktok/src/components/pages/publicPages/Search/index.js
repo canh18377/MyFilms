@@ -4,6 +4,7 @@ import Styles from "./search.module.scss";
 import SearchVideos from "./searchVideos/SearchVideos";
 import SearchUsers from "./searchUsers/SearchUsers";
 import { SharedData } from "../../../Layout/DefaultLayout";
+import SearchTopVideos from "./searchVideos/SearchTopVideos";
 function Search() {
   const [status, setStatus] = useState(true);
   const { contentSearch } = useContext(SharedData);
@@ -14,6 +15,8 @@ function Search() {
     Videos = SearchUsers;
   } else if (categorySearch === "Videos") {
     Videos = SearchVideos;
+  } else {
+    Videos = SearchTopVideos;
   }
   return (
     <div className={clsx(Styles.searchPage)}>

@@ -2,18 +2,20 @@
   display: grid;
   grid-template-rows: 40% 1fr;
   height: 100vh;
-  width: 100%;
-  position: fixed;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .infoProfile {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   font-family: Georgia, "Times New Roman", Times, serif;
   box-sizing: border-box;
-  padding-bottom: 100px;
-  margin-left: 8rem;
-  margin-top: 40px;
+  margin-left: 13%;
+  margin-top: 7%;
 }
+
 .yourCaption {
   margin-left: 20px;
   font-size: small;
@@ -22,6 +24,7 @@
 }
 .yourInfo {
   margin-left: 20px;
+  height: 100%;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 .modifyInfo {
@@ -45,7 +48,18 @@
   border-bottom: 2px solid black;
 }
 .yourVideos {
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+@media screen and (max-width: 437px) {
+  .yourInfo {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .yourProfile {
+    grid-template-rows: 60% 1fr;
+  }
 }

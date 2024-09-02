@@ -12,27 +12,43 @@ const UploadVideo = () => {
   const [genres, setGenre] = useState(["Video"]);
   const [previewVideo, setPreviewVideo] = useState("");
   const { profileInfo } = useContext(SharedData);
-  const handleUpload = () => {
+  const handleUpload = (event) => {
+    event.preventDefault();
+
+    if (infoVideoUpload.nameVideo.trim() === "") {
+      message.warning("Hãy nhập tên viddeo");
+      return;
+    }
+    console.log(genres);
     const form = new FormData();
     form.append("fileVideo", infoVideoUpload.fileVideo);
     form.append("nameVideo", infoVideoUpload.nameVideo);
-    form.append("genres", genres);
+    form.append("genres", JSON.stringify(genres));
     form.append("limitedAge", infoVideoUpload.limitedAge);
-    fetch(`http://localhost:8080/uploadVideo/${profileInfo.author}`, {
-      method: "POST",
-      body: form,
-    })
-      .then((res) => {
-        if (!res.ok) {
-          message.error("server bận");
-        } else return res.json();
+    try {
+      fetch(`http://localhost:8080/uploadVideo/${profileInfo.author}`, {
+        method: "POST",
+        body: form,
       })
-      .then((data) => {
-        if (data.err) {
-          message.error(data.err);
-        } else message.success("tải lên thành công");
-      });
-    console.log(profileInfo.author);
+        .then((res) => {
+          if (!res.ok) {
+            message.error("server bận");
+            console.log("erre");
+          } else return res.json();
+        })
+        .then((data) => {
+          if (data.err) {
+            message.error(data.err);
+          } else message.success(data.success);
+        })
+        .catch((err) => {
+          message.error("Có lỗi xảy ra");
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+      message.error("Có lỗi xảy ra");
+    }
   };
 
   const handleChecked = (e) => {
@@ -94,15 +110,23 @@ const UploadVideo = () => {
                   accept="video/*"
                   onChange={convertVideo}
                 />
-                <label htmlFor="file-upload">Chọn video</label>
+                <label htmlFor="file-upload">
+                  {console.log(infoVideoUpload.fileVideo)}
+                  {infoVideoUpload.fileVideo === ""
+                    ? "Chọn video"
+                    : infoVideoUpload.fileVideo.name}
+                </label>
               </div>
               {infoVideoUpload.fileVideo && (
                 <video
+                  className={clsx(Styles.previewVideo)}
                   style={{
                     background: "black",
                     height: 200,
-                    minWidth: 200,
-                    margin: 5,
+                    minWidth: "50%",
+                    maxHeight: "100%",
+                    marginTop: 5,
+                    borderRadius: 20,
                   }}
                   controls
                   muted
@@ -140,7 +164,7 @@ const UploadVideo = () => {
               })}
             </div>
           </div>
-          <div className={clsx(Styles.categorys)}>
+          <div className={clsx(Styles.categories)}>
             {Category.map((genre, index) => {
               return (
                 <Checkbox
@@ -160,10 +184,10 @@ const UploadVideo = () => {
           >
             <input
               style={{
+                cursor: "pointer",
                 width: 150,
                 height: 40,
                 borderRadius: 10,
-
                 backgroundColor: "green",
               }}
               type="submit"

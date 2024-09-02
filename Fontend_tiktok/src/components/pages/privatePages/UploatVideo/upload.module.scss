@@ -1,5 +1,6 @@
 .formUpload {
-  max-width: 700px;
+  width: 90%;
+  height: 90%;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #e1e1e1;
@@ -7,6 +8,7 @@
   margin-top: 30px;
   text-align: center;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  overflow: auto;
 }
 .content {
   display: flex;
@@ -17,7 +19,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-  width: 350px;
+  width: 60%;
 }
 .inputUpload {
   text-align: center;
@@ -57,4 +59,14 @@
 
 .inputCheckbox {
   flex: 1;
+}
+@media screen and (max-width: 643px) {
+  .categories {
+    height: 40px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .previewVideo {
+    display: none;
+  }
 }

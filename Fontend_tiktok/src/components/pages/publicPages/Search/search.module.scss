@@ -1,16 +1,20 @@
-.Header{
-    display: flex;
-    justify-content: space-around;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 40px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid darkgray;}
-.contentSearch{
-    cursor: pointer;
-    flex: 1;
-    text-align: center;
-    padding-bottom: 30px;
+.Header {
+  display: flex;
+  justify-content: space-around;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  height: 40px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid darkgray;
 }
-.choosen{
-    border-bottom: 1px solid black;
+.contentSearch {
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.choosen {
+  border-bottom: 1px solid black;
+}
+.content {
+  height: 100vh;
 }

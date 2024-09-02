@@ -15,7 +15,7 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
     formData.append("name", profileInfo.name);
     setIsModalOpen(false);
     fetch("http://localhost:8080/profile/update", {
-      method: "POST",
+      method: "PUT",
       headers: { Authorization: `${Token}` },
       body: formData,
     })

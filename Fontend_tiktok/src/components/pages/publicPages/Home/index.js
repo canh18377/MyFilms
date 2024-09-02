@@ -1,17 +1,28 @@
 import clsx from "clsx";
-import "video-react/dist/video-react.css";
-import { useState, useContext, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import ReactPlayer from "react-player";
-import { HeartOutlined } from "@ant-design/icons";
+import { HeartOutlined, CommentOutlined } from "@ant-design/icons";
 import { Avatar, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
-import CommentVideo from "../commentVideo";
+import { SharedData } from "../../../Layout/DefaultLayout";
 function Home() {
+  var profileInfoLocal;
+  const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
   const [autoPlay, setAutoPlay] = useState(false);
   const [videoHome, setVideoHome] = useState([]);
+  const [likedVideo, setLikedVideo] = useState(() => {
+    try {
+      const storedLikedVideo = localStorage.getItem("likedVideo");
+      return storedLikedVideo ? JSON.parse(storedLikedVideo) : [];
+    } catch (error) {
+      return [];
+    }
+  });
+  const likeVideoref = useRef(likedVideo);
   useEffect(() => {
+    profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     fetch("http://localhost:8080", {
       headers: { "Content-type": "application/json" },
     })
@@ -29,6 +40,44 @@ function Home() {
         message.error("server bận");
       });
   }, []);
+
+  const sendList_likeVideo = (likedVideo, persionalLike) => {
+    const url = `http://localhost:8080/likeVideos`;
+    const formData = new FormData();
+    formData.append("likedVideo", JSON.stringify(likedVideo));
+    formData.append("persionalLike", JSON.stringify(persionalLike));
+    navigator.sendBeacon(url, formData);
+  };
+  useEffect(() => {
+    const cleanup = () => {
+      localStorage.removeItem("likedVideo");
+      sendList_likeVideo(
+        likeVideoref.current,
+        profileInfoLocal && profileInfoLocal.author
+      );
+    };
+    return () => cleanup();
+  }, []);
+  useEffect(() => {
+    console.log(likedVideo);
+    likeVideoref.current = likedVideo;
+    localStorage.setItem("likedVideo", JSON.stringify(likedVideo));
+  }, [likedVideo]);
+
+  const handleTym = (idVideo) => {
+    if (!isLoged) {
+      setIsModelOpen(true);
+      return;
+    } else {
+      setLikedVideo((prev) => {
+        if (prev.includes(idVideo)) {
+          return likedVideo.filter((id) => {
+            return id !== idVideo;
+          });
+        } else return [...prev, idVideo];
+      });
+    }
+  };
   if (videoHome.length === 0) {
     return;
   }
@@ -36,7 +85,7 @@ function Home() {
     <div className={clsx(Styles.container)}>
       {videoHome.ArrayVideos.map((video, index) => {
         return (
-          <div key={index} style={{ display: "flex" }}>
+          <div key={index} className={clsx(Styles.containerVideo)}>
             <div className={clsx(Styles.content)}>
               <ReactPlayer
                 playing={autoPlay}
@@ -47,16 +96,13 @@ function Home() {
                 url={video.path}
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-                marginLeft: "10px",
-              }}
-            >
+            <div className={clsx(Styles.actionItemContainer)}>
               <Avatar
-                style={{ cursor: "pointer" }}
+                size={35}
+                style={{
+                  cursor: "pointer",
+                  boxShadow: "0 0 2px black",
+                }}
                 onClick={() => Navigate(`/profile/${video.author}`)}
                 src={
                   videoHome.infoOwner.find((profile) => {
@@ -64,8 +110,24 @@ function Home() {
                   }).path
                 }
               />
-              <HeartOutlined />
-              <CommentVideo idVideo={video._id} />
+              <div style={{ height: 55, marginBottom: 60 }}>
+                <HeartOutlined
+                  onClick={() => handleTym(video._id)}
+                  className={clsx(Styles.heartVideo, {
+                    [Styles.likedVideo]: likedVideo.includes(video._id),
+                  })}
+                />
+                <p style={{ marginLeft: 10 }}>
+                  {likedVideo.includes(video._id)
+                    ? video.likes + 1
+                    : video.likes}
+                </p>
+              </div>
+
+              <CommentOutlined
+                className={clsx(Styles.commentVideo)}
+                onClick={() => Navigate(`/videoComments/${video._id}`)}
+              />
             </div>
           </div>
         );

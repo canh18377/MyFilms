@@ -1,14 +1,14 @@
 import { SharedData } from "../../../../Layout/DefaultLayout";
 import { useContext, useState, useEffect } from "react";
-import { Avatar, message, Progress } from "antd";
+import { message, Progress } from "antd";
 import clsx from "clsx";
 import Styles from "./searchVideos.module.scss";
-import { Navigate, useNavigate } from "react-router-dom";
+import ReactPlayer from "react-player";
+import { useNavigate } from "react-router-dom";
 function Searchvideos({ status, setStatus }) {
   const [foundVideos, setFoundVideos] = useState([]);
   const { contentSearch } = useContext(SharedData);
   const Navigate = useNavigate();
-  const handleClickUser = () => {};
   console.log("contentSearch:", contentSearch);
   useEffect(() => {
     fetch(
@@ -54,8 +54,17 @@ function Searchvideos({ status, setStatus }) {
     <div className={clsx(Styles.videos)}>
       {foundVideos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
-            <video src={video.path} className={clsx(Styles.video)} />
+          <div
+            onClick={() => Navigate(`/videoComments/${video._id}`)}
+            key={index}
+            className={clsx(Styles.containerVideo)}
+          >
+            <ReactPlayer
+              height={"80%"}
+              width={"95%"}
+              url={video.path}
+              className={clsx(Styles.video)}
+            />
             <div className={clsx(Styles.infoVideo)}>
               <u style={{ fontSize: "small" }}>@{video.nameVideo}</u>
               {

@@ -37,9 +37,10 @@
 .inputHeader {
   border: none;
   width: 100%;
-  height: 21px;
+  height: 100%;
   outline: none;
   background-color: transparent;
+  height: 100%;
 }
 .buttonUpload {
   margin-top: 12px;
@@ -69,6 +70,11 @@
 @media screen and (max-width: 753px) {
   .searchHeader,
   .inputHeader {
+    display: none;
+  }
+}
+@media screen and (max-width: 425px) {
+  .buttonUpload {
     display: none;
   }
 }

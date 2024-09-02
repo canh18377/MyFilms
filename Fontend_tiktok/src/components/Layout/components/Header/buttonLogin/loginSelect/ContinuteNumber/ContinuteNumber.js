@@ -2,52 +2,49 @@ import clsx from "clsx";
 import Styles from "./continuteNumber.module.scss";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
+
 function ContinuteNumber({
   account,
   setaccount,
-  setConfirmAccount,
-  confirmAccount,
   setIsLogIn,
   setIsLoged,
   handleCloseModal,
   setprofileInfo,
-  profileInfo,
 }) {
   const Navigate = useNavigate();
-  const HandleSubmit = (event) => {
+
+  const HandleSubmit = async (event) => {
     event.preventDefault();
-    const APIUSer = "http://localhost:8080/account";
-    fetch(APIUSer, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(account),
-    }).then((response) => {
-      try {
-        if (!response.ok) {
-          message.error("server bận , thử lại sau");
-        } else
-          return response.json().then((data) => {
-            if (data.Token) {
-              console.log(data.profileInfo.profilePhoto);
-              message.success(data.message);
-              localStorage.setItem("jwtToken", data.Token);
-              Navigate("/");
-              setIsLoged(true);
-              setConfirmAccount(true);
-              handleCloseModal(false);
-              setprofileInfo(data.profileInfo);
-              localStorage.setItem(
-                "profileInfo",
-                JSON.stringify(data.profileInfo)
-              );
-            } else {
-              message.error("sai thông tin đăng nhập");
-            }
-          });
-      } catch (error) {
-        console.log(error);
+    const APIUser = "http://localhost:8080/account";
+    try {
+      const response = await fetch(APIUser, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(account),
+      });
+
+      if (!response.ok) {
+        message.error("Server bận, thử lại sau");
+        return;
       }
-    });
+
+      const data = await response.json();
+
+      if (data.Token) {
+        message.success(data.message);
+        localStorage.setItem("jwtToken", data.Token);
+        Navigate("/");
+        setIsLoged(true);
+        handleCloseModal(false);
+        setprofileInfo(data.profileInfo);
+        localStorage.setItem("profileInfo", JSON.stringify(data.profileInfo));
+      } else {
+        message.error("Sai thông tin đăng nhập");
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Đã xảy ra lỗi, vui lòng thử lại sau.");
+    }
   };
 
   return (
@@ -59,40 +56,20 @@ function ContinuteNumber({
           value={account.name}
           className={clsx(Styles.account)}
           placeholder="Account"
-          onChange={(e) => {
-            setaccount({ ...account, name: e.target.value });
-          }}
+          onChange={(e) => setaccount({ ...account, name: e.target.value })}
         />
 
         <input
           id="password"
           value={account.password}
           className={clsx(Styles.account)}
-          placeholder="password"
+          placeholder="Password"
           type="password"
-          onChange={(e) => {
-            setaccount({ ...account, password: e.target.value });
-          }}
+          onChange={(e) => setaccount({ ...account, password: e.target.value })}
         />
-        <p
-          style={{ color: "red", display: !confirmAccount ? "block" : "none" }}
-        >
-          Incorrect account or password
-        </p>
       </div>
       <div className={clsx(Styles.containerButton)}>
-        <Button
-          onClick={() => setConfirmAccount(true)}
-          className={clsx(Styles.button)}
-        >
-          Try again
-        </Button>
-
-        <Button
-          htmlType={"submit"}
-          className={clsx(Styles.button)}
-          loading={!confirmAccount}
-        >
+        <Button htmlType="submit" className={clsx(Styles.button)}>
           LogIn
         </Button>
       </div>
@@ -102,9 +79,7 @@ function ContinuteNumber({
           Don’t have an account?
           <u
             style={{ color: "red", cursor: "pointer" }}
-            onClick={() => {
-              setIsLogIn(false);
-            }}
+            onClick={() => setIsLogIn(false)}
           >
             {" "}
             Sign up
