@@ -22,22 +22,32 @@ function SideBar() {
   return (
     <div className={clsx(Styles.sideBar)}>
       <SideBarChildren
-        icon={<HomeOutlined style={{ fontSize: 24 }} />}
+        icon={
+          <HomeOutlined style={{ color: "rgb(43, 39, 39)", fontSize: 24 }} />
+        }
         content="For You"
         handle={() => navigate("/")}
       />
       <SideBarChildren
-        icon={<TeamOutlined style={{ fontSize: 24 }} />}
+        icon={
+          <TeamOutlined style={{ color: "rgb(43, 39, 39)", fontSize: 24 }} />
+        }
         content="Following"
         handle={() => navigate("/following")}
       />
       <SideBarChildren
-        icon={<UserOutlined style={{ fontSize: 24 }} />}
+        icon={
+          <UserOutlined style={{ color: "rgb(43, 39, 39)", fontSize: 24 }} />
+        }
         content="Profile"
         handle={handleNavProfile}
       />
       <SideBarChildren
-        icon={<CloudUploadOutlined style={{ fontSize: 24 }} />}
+        icon={
+          <CloudUploadOutlined
+            style={{ color: "rgb(43, 39, 39)", fontSize: 24 }}
+          />
+        }
         content="Upload"
         handle={() => {
           if (isLoged) {

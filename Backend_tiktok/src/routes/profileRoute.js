@@ -26,6 +26,7 @@ router.put(
 router.get("/videos/:author", ProfileController.getVideo);
 router.get("/likedVideos/:author", ProfileController.getLikedVideos);
 router.get("/:author", ProfileController.index);
+router.get("/getFollowList/:author/:isFollow", ProfileController.getFollowList);
 router.delete("/deleteVideo", ProfileController.deleteVideo);
 router.put("/updateVideo", ProfileController.updateVideo);
 module.exports = router;

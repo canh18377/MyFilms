@@ -4,6 +4,8 @@ const Profile = require("../models/ProfileUser");
 const UserVideos = require("../models/UserVideos");
 const Videos = require("../models/UserVideos");
 const LikedVideos = require("../models/LikedVideos");
+const List_Follow = require("../models/List_Follow");
+
 class ProfileController {
   async index(req, res) {
     console.log("req::::", req);
@@ -128,6 +130,30 @@ class ProfileController {
       console.log("video da update:", response);
     } catch (error) {
       res.json({ error: "Có lỗi xảy ra , thử lại sau ít phút" });
+      console.log(error);
+    }
+  }
+  async getFollowList(req, res) {
+    console.log(req.params);
+    try {
+      const { author, isFollow } = req.params;
+      const FollowList = await List_Follow.findOne({ user: author });
+      console.log("FollowList", FollowList);
+      if (isFollow === "isFollower" && FollowList) {
+        const FollowerList = await Profile.find({
+          author: { $in: FollowList.follower },
+        });
+        console.log("FollowerList", FollowerList);
+        return res.json(FollowerList);
+      } else if (isFollow === "isFollowing" && FollowList) {
+        const FollowingList = await Profile.find({
+          author: { $in: FollowList.following },
+        });
+        console.log("FollowingList", FollowingList);
+
+        return res.json(FollowingList);
+      } else return res.json([]);
+    } catch (error) {
       console.log(error);
     }
   }

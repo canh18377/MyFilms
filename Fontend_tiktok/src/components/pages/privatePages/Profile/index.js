@@ -7,6 +7,7 @@ import FormUpdate from "./formUpdate";
 import VideoUpLoaded from "./yourVideos/VideoUpLoaded";
 import LikedVideos from "./yourVideos/LikedVideos";
 import { useParams } from "react-router-dom";
+import List_Follower_Following from "./list_follower_following";
 
 function Profile() {
   const { author } = useParams();
@@ -61,7 +62,10 @@ function Profile() {
       <div className={clsx(Styles.yourProfile)}>
         <div className={clsx(Styles.infoProfile)}>
           <div className={clsx(Styles.avatarPhoto_Cap)}>
-            <Avatar size={160} src={profileInfo.profilePhoto.path} />
+            <Avatar
+              className={clsx(Styles.profileAvatar)}
+              src={profileInfo.profilePhoto.path}
+            />
             <p className={clsx(Styles.yourCaption)}>{profileInfo.caption}</p>
           </div>
 
@@ -69,8 +73,7 @@ function Profile() {
             <h4>Tên:{profileInfo.name}</h4>
             {profileInfo.author && <h4> id:{profileInfo.author}</h4>}
             <div className={clsx(Styles.modifyInfo)}>
-              <p>follower</p>
-              <p>following</p>
+              <List_Follower_Following />
             </div>
             <FormUpdate
               profileInfo={profileInfo}

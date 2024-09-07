@@ -83,7 +83,10 @@ function ButtonLogIn({
             <hr />
             Don’t have an account?
             <em
-              onClick={() => setIsLogIn(false)}
+              onClick={() => {
+                setIsOpenLogIn(true);
+                setIsLogIn(false);
+              }}
               style={{ cursor: "pointer", color: "red" }}
             >
               {" "}

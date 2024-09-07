@@ -25,6 +25,6 @@ app.use(bodyParser.json());
 
 router(app);
 db.connect();
-app.listen(port, () => {
-  console.log(` app listening on port ${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`App listening on port ${port}`);
 });

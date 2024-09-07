@@ -8,7 +8,6 @@
 }
 .infoProfile {
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
   font-family: Georgia, "Times New Roman", Times, serif;
   box-sizing: border-box;
@@ -29,6 +28,7 @@
 }
 .modifyInfo {
   display: flex;
+  color: blue;
 }
 .yourHistory {
   position: relative;
@@ -51,15 +51,22 @@
   height: 100%;
   width: 100%;
 }
-
-@media screen and (max-width: 437px) {
-  .yourInfo {
-    font-size: 10px;
-  }
+.profileAvatar {
+  width: 170px;
+  height: 170px;
+  font-size: large;
 }
 
 @media screen and (max-width: 768px) {
   .yourProfile {
-    grid-template-rows: 60% 1fr;
+    grid-template-rows: 50% 1fr;
+  }
+  .yourInfo {
+    font-size: 10px;
+  }
+  .profileAvatar {
+    width: 100px;
+    height: 100px;
+    font-size: small;
   }
 }

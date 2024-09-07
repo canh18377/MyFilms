@@ -1,7 +1,9 @@
 import { Modal, Button, Avatar, message } from "antd";
+import { CloudUploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Styles from "./formUpdate.module.scss";
+
 function FormUpdate({ profileInfo, setProfileInfo }) {
   const Token = localStorage.getItem("jwtToken");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,7 +106,20 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
         </form>
       </Modal>
       {profileInfoLocal.author === profileInfo.author && (
-        <Button onClick={() => setIsModalOpen(true)}>sửa thông tin</Button>
+        <Button
+          className={clsx(Styles.buttonUpdate)}
+          onClick={() => setIsModalOpen(true)}
+        >
+          <CloudUploadOutlined />
+          <p
+            style={{
+              fontFamily: "-moz-initial",
+            }}
+          >
+            {" "}
+            Cập nhập
+          </p>
+        </Button>
       )}
     </div>
   );
