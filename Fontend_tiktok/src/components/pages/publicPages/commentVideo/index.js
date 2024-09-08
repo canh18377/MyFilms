@@ -47,10 +47,10 @@ function VideoComments() {
       <div className={Styles.videoContainer}>
         <ReactPlayer
           controls
+          className={Styles.reactPlayVideo}
           playing={true}
           width={"100%"}
           height={"100%"}
-          style={{ borderRadius: 10 }}
           url={video_Owner_CommentsInfo.video.path}
         />
       </div>

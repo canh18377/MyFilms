@@ -57,13 +57,13 @@ function LikedVideos({ author }) {
     <div className={clsx(Styles.containerVideos)}>
       {likedVideos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
-            <div
-              onClick={() => Navigate(`/videoComments/${video._id}`)}
-              className={clsx(Styles.video)}
-            >
-              <ReactPlayer width={"100%"} height={"100%"} url={video.path} />
-            </div>
+          <div key={index} className={clsx(Styles.containerVideo_Info)}>
+            <ReactPlayer
+              className={clsx(Styles.containerVideo)}
+              url={video.path}
+              width={"100%"}
+              height={"100%"}
+            />
             <div className={clsx(Styles.videoInfo)}>
               <p style={{ fontSize: "90%" }}>@{video.nameVideo}</p>
               <u style={{ fontSize: "small", disulay: "block" }}>

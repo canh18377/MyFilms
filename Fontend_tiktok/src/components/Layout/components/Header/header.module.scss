@@ -68,14 +68,12 @@
   width: 10%;
   cursor: pointer;
 }
-@media screen and (max-width: 753px) {
-  .searchHeader,
-  .inputHeader {
-    display: none;
-  }
-}
-@media screen and (max-width: 425px) {
+
+@media screen and (max-width: 500px) {
   .buttonUpload {
     display: none;
+  }
+  .iconHeader {
+    font-size: 1.5rem;
   }
 }

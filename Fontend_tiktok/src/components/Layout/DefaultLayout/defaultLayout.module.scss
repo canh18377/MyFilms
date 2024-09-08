@@ -14,9 +14,7 @@
 .content {
   height: calc(100vh - 64px);
   display: flex;
-  align-content: center;
   width: 100%;
-  justify-content: center;
 }
 @media screen and (max-width: 1071px) {
   .container {
@@ -25,9 +23,8 @@
 }
 @media screen and (max-width: 493px) {
   .content {
-    height: calc(-200px + 100vh);
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    margin: auto;
   }
 }

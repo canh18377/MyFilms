@@ -13,13 +13,17 @@
   align-items: start;
   margin-top: 20px;
 }
+.totalOfLike {
+  font-size: 1.3rem;
+  margin: 8px;
+}
 .video video {
   object-fit: cover;
 }
 .content {
   border-radius: 20px;
   overflow: hidden;
-  width: 100%;
+  width: 95%;
   height: 90%;
   position: relative;
   scroll-snap-align: start;
@@ -38,7 +42,7 @@
 .actionItemContainer {
   display: grid;
   grid-column: 1fr;
-  grid-template-rows: 25% 10% 5%;
+  grid-template-rows: 28% 15% 5%;
   margin-left: 2%;
   position: relative;
   height: 100%;
@@ -74,15 +78,51 @@
   color: red;
 }
 //tablet
-@media screen and (max-width: 1023px) and (min-width: 768px) {
+@media screen and (max-width: 1024px) and (min-width: 768px) {
   .actionItemContainer {
     margin-top: 15%;
   }
   .containerVideo {
-    grid-template-columns: 45% 1fr;
+    grid-template-columns: 65% 1fr;
   }
   .content {
     width: 100%;
+    height: 70%;
+  }
+  .follwing {
+    color: whitesmoke;
+    background-color: red;
+    box-shadow: 0 0 2px rgb(56, 116, 85);
+    border-radius: 50%;
+    font-size: 1.7rem;
+  }
+  .followed {
+    color: rgb(228, 65, 16);
+    box-shadow: 0 0 2px rgb(56, 116, 85);
+    border-radius: 50%;
+    background-color: rgb(244, 248, 244);
+    font-size: 1.7rem;
+  }
+  .avatar {
+    height: 5rem;
+    width: 5rem;
+    font-size: small;
+    box-shadow: 0 0 2px black;
+    cursor: pointer;
+  }
+  .follow_followed {
+    position: absolute;
+    top: 53px;
+    margin-left: 24px;
+  }
+  .commentVideo,
+  .heartVideo {
+    font-size: 3.5rem;
+    cursor: pointer;
+  }
+  .totalOfLike {
+    font-size: 2rem;
+    margin: 8px;
   }
 }
 //moblile
@@ -101,16 +141,15 @@
 @media screen and (max-width: 545px) {
   .actionItemContainer {
     grid-template-rows: 25% 18% 5%;
-    margin-top: 35px;
   }
   .video video {
     object-fit: fill;
   }
   .containerVideo {
-    grid-template-columns: 70% 1fr;
+    grid-template-columns: 80% 1fr;
   }
   .content {
-    height: 70%;
+    height: 60%;
   }
   body,
   html {

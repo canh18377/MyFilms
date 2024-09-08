@@ -55,3 +55,30 @@
 .commentText::-webkit-scrollbar {
   height: 0;
 }
+.post {
+  border-radius: 40px;
+}
+@media screen and (max-width: 768px) {
+  .currentUser_Img {
+    display: none;
+  }
+
+  .currentUser {
+    display: grid;
+    width: 100%;
+
+    grid-template-columns: 1fr;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 30px;
+    justify-content: center;
+    position: relative;
+    column-gap: 2px;
+  }
+  .formComment {
+    grid-column: 1/3;
+    grid-row: 1/3;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -27,3 +27,19 @@
   align-items: center;
   cursor: pointer;
 }
+.reactPlayVideo video {
+  object-fit: contain;
+}
+@media screen and (max-width: 768px) {
+  .pagesComment {
+    display: grid;
+    margin-top: 4px;
+    grid-template-rows: 50% 1fr;
+    grid-template-columns: 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+  .reactPlayVideo video {
+    object-fit: contain;
+  }
+}

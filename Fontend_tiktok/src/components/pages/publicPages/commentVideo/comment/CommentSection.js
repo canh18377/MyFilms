@@ -100,10 +100,10 @@ function CommentSection({
         <p style={{ color: "red" }}>Hãy đăng nhập để viết bình luận........</p>
       ) : (
         <div className={clsx(Styles.currentUser)}>
-          <div style={{ height: "80%" }}>
-            <Avatar src={currentUser.currentUserImg} />
+          <div className={clsx(Styles.currentUser_Img)}>
+            <Avatar src={currentUser && currentUser.currentUserImg} />
             <em style={{ color: "gray", fontSize: "small" }}>
-              #{currentUser.currentUserFullName}
+              #{currentUser && currentUser.currentUserFullName}
             </em>
           </div>
           <form

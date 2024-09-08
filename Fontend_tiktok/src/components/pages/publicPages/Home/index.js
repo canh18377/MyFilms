@@ -176,7 +176,7 @@ function Home() {
                     [Styles.likedVideo]: likedVideo.includes(video._id),
                   })}
                 />
-                <p style={{ marginLeft: 6 }}>
+                <p className={clsx(Styles.totalOfLike)}>
                   {likedVideo.includes(video._id)
                     ? video.likes + 1
                     : video.likes}

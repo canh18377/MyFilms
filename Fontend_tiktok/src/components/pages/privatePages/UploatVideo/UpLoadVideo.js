@@ -16,7 +16,11 @@ const UploadVideo = () => {
     event.preventDefault();
 
     if (infoVideoUpload.nameVideo.trim() === "") {
-      message.warning("Hãy nhập tên viddeo");
+      message.warning("Hãy nhập tên Video");
+      return;
+    }
+    if (!infoVideoUpload.fileVideo) {
+      message.warning(" Bạn chưa chọn Video nào");
       return;
     }
     console.log(genres);
@@ -120,14 +124,6 @@ const UploadVideo = () => {
               {infoVideoUpload.fileVideo && (
                 <video
                   className={clsx(Styles.previewVideo)}
-                  style={{
-                    background: "black",
-                    height: 200,
-                    minWidth: "50%",
-                    maxHeight: "100%",
-                    marginTop: 5,
-                    borderRadius: 20,
-                  }}
                   controls
                   muted
                   autoPlay={true}
@@ -136,6 +132,7 @@ const UploadVideo = () => {
               )}
             </div>
             <input
+              className={clsx(Styles.inputName)}
               placeholder="Video name"
               onChange={(e) =>
                 setInforVideoUpload({

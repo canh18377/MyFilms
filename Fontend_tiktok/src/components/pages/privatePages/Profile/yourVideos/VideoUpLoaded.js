@@ -51,10 +51,13 @@ function VideoUpLoaded({ author }) {
     <div className={clsx(Styles.containerVideos)}>
       {videos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
-            <div className={clsx(Styles.video)}>
-              <ReactPlayer width={"100%"} height={"100%"} url={video.path} />
-            </div>
+          <div key={index} className={clsx(Styles.containerVideo_Info)}>
+            <ReactPlayer
+              className={clsx(Styles.containerVideo)}
+              width={"100%"}
+              height={"100%"}
+              url={video.path}
+            />
             <div className={clsx(Styles.videoInfo)}>
               <p style={{ fontSize: "90%" }}>@{video.name}</p>
               <u style={{ fontSize: "small", disulay: "block" }}>

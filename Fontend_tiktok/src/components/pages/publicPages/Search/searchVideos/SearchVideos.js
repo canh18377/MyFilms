@@ -61,7 +61,7 @@ function Searchvideos({ status, setStatus }) {
           >
             <ReactPlayer
               height={"80%"}
-              width={"95%"}
+              width={"100%"}
               url={video.path}
               className={clsx(Styles.video)}
             />

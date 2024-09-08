@@ -9,18 +9,16 @@
 }
 .containerVideo {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  height: 39%;
-  width: 20%;
+  height: 37%;
+  width: 25%;
   margin: 10px;
   border-radius: 10px;
   overflow: hidden;
 }
-.video {
-  height: 300px;
-  width: 170px;
-  background-color: rgb(32, 6, 6);
+
+.video video {
+  object-fit: cover;
   border-radius: 10px;
-  margin-left: 5px;
 }
 .genre {
   font-size: xx-small;
@@ -31,4 +29,14 @@
 }
 .genre::-webkit-scrollbar {
   height: 0;
+}
+@media screen and (max-width: 768px) {
+  .containerVideo {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    height: 30%;
+    width: 30%;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 }

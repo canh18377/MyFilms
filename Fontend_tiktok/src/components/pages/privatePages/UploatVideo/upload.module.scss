@@ -19,7 +19,12 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-  width: 60%;
+  width: 100%;
+}
+.previewVideo {
+  height: 400px;
+  width: 100%;
+  box-shadow: -1px 2px 2px 1px rgba(26, 19, 19, 0.1);
 }
 .inputUpload {
   text-align: center;
@@ -27,6 +32,10 @@
   border: none;
   border-radius: 1px solid black;
   margin-bottom: 10px;
+}
+.inputName {
+  height: 25px;
+  border-radius: 10px;
 }
 .custom_file_upload {
   position: relative;
@@ -50,7 +59,7 @@
     cursor: pointer;
     border-radius: 10px; // Bo góc nếu cần
     transition: background-color 0.3s;
-
+    overflow: auto;
     &:hover {
       background-color: #a93030; // Màu nền khi hover
     }
@@ -60,13 +69,24 @@
 .inputCheckbox {
   flex: 1;
 }
-@media screen and (max-width: 643px) {
+
+@media screen and (max-width: 767px) {
   .categories {
-    height: 40px;
+    height: 90px;
     overflow-y: auto;
     margin-bottom: 10px;
   }
+
+  .inputName {
+    margin-top: 3px;
+    border-radius: 5px;
+    height: 20px;
+  }
   .previewVideo {
     display: none;
+  }
+  .input {
+    width: 100%;
+    border-radius: 10px;
   }
 }
