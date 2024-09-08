@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Styles from "./formUpdate.module.scss";
 
 function FormUpdate({ profileInfo, setProfileInfo }) {
-  const Token = localStorage.getItem("jwtToken");
+  const Token = JSON.parse(localStorage.getItem("jwtToken"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState("");
   const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
@@ -28,10 +28,14 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
         } else return res.json();
       })
       .then((data) => {
-        setProfileInfo(data);
+        setProfileInfo(data.Profile);
+        if (data.newToken) {
+          localStorage.setItem("jwtToken", JSON.stringify(data.newToken));
+        }
         message.success("thay đổi thành công");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         message.error("server bận");
       });
   };

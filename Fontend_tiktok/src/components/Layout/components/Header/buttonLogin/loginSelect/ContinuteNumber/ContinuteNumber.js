@@ -32,7 +32,7 @@ function ContinuteNumber({
 
       if (data.Token) {
         message.success(data.message);
-        localStorage.setItem("jwtToken", data.Token);
+        localStorage.setItem("jwtToken", JSON.stringify(data.Token));
         Navigate("/");
         setIsLoged(true);
         handleCloseModal(false);

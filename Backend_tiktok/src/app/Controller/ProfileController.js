@@ -24,6 +24,8 @@ class ProfileController {
       //xác thực tài khoản
       const response = await jwtActions.verifyToken(req.headers.authorization);
       console.log("len server:", req.body);
+      console.log("ressposne", response);
+
       //tìm tài khoản
       const account = await Account.findOne({ name: response.name });
       const updateData = {};
@@ -50,7 +52,7 @@ class ProfileController {
         new: true,
       }).then((Profile) => {
         console.log("ban update", Profile);
-        res.json(Profile);
+        res.json({ Profile, newToken: response.newToken });
       });
     } catch (error) {
       console.log(error);

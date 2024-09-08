@@ -1,11 +1,13 @@
-import { useEffect, memo, useState } from "react";
+import { useEffect, memo, useState, useContext } from "react";
 import { message, Progress } from "antd";
 import clsx from "clsx";
 import Styles from "./videoProfile.module.scss";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
+import { SharedData } from "../../../../Layout/DefaultLayout";
 var profileInfoLocal;
 function LikedVideos({ author }) {
+  const { profileInfo } = useContext(SharedData);
   console.log(author);
   const Navigate = useNavigate();
   const [likedVideos, setLikedVideos] = useState([]);
@@ -24,7 +26,9 @@ function LikedVideos({ author }) {
       .then((data) => {
         console.log(data);
         if (data.Notification) {
-          message.loading(data.Notification);
+          profileInfoLocal.author === profileInfo.author
+            ? message.loading(data.Notification)
+            : message.loading("Người này chưa thích video nào!");
           setIsLoading(false);
           return;
         }
