@@ -100,6 +100,7 @@ function VideoComments() {
           avaiable={video_Owner_CommentsInfo.videoComments}
           profileLocalstorage={profileLocalstorage}
           setISLoading={setISLoading}
+          setvideo_Owner_CommentsInfo={setvideo_Owner_CommentsInfo}
         />
       </div>
     </div>

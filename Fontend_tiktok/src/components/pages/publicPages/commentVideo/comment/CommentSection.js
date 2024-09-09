@@ -11,6 +11,7 @@ function CommentSection({
   avaiable,
   profileLocalstorage,
   setISLoading,
+  setvideo_Owner_CommentsInfo,
 }) {
   const like_disLike_List_Ref = useRef();
   const Navigate = useNavigate();
@@ -50,6 +51,12 @@ function CommentSection({
       message.error("Bạn chưa nhập gì!");
       return;
     }
+    setvideo_Owner_CommentsInfo((prev) => {
+      return {
+        ...prev,
+        videoComments: [...prev.videoComments, contentComment],
+      };
+    });
     try {
       const response = await fetch(
         "http://localhost:8080/videoComments/storeComment",
@@ -65,8 +72,8 @@ function CommentSection({
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      setContentComment({ ...contentComment, text: "" });
       console.log("new comment", data);
-      setISLoading(true);
     } catch (error) {
       console.log(error);
     }
@@ -87,12 +94,14 @@ function CommentSection({
     navigator.sendBeacon(url, formData);
   };
   useEffect(() => {
-    const cleanup = () => {
+    console.log("được chạy");
+
+    return () => {
+      console.log("đã mount");
       console.log(like_disLike_List_Ref.current);
       sendList_Dis_Like(like_disLike_List_Ref.current);
       localStorage.removeItem("like_disLike_ListLocal");
     };
-    return () => cleanup();
   }, []);
   return (
     <div className={clsx(Styles.commentPage)}>
@@ -112,6 +121,7 @@ function CommentSection({
           >
             <input
               className={clsx(Styles.input)}
+              value={contentComment.text}
               onChange={(e) =>
                 setContentComment({ ...contentComment, text: e.target.value })
               }
@@ -141,7 +151,10 @@ function CommentSection({
                   />
                   <p>{comment.fullName}</p>
                   <p style={{ color: "gray" }}>
-                    #{convertDate(comment.updatedAt)}
+                    #
+                    {comment.updatedAt
+                      ? convertDate(comment.updatedAt)
+                      : "Vừa xong"}
                   </p>
                 </div>
                 <div className={clsx(Styles.contentComment)}>

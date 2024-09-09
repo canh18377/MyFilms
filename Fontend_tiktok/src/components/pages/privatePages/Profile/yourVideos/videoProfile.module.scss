@@ -6,7 +6,7 @@
 }
 .containerVideo_Info {
   display: grid;
-  grid-template-rows: 80% 1fr;
+  grid-template-rows: 75% 1fr;
   margin: 5px;
   height: 50%;
   width: 14%;
@@ -25,6 +25,7 @@
 .videoInfo::-webkit-scrollbar {
   height: 0;
 }
+
 .update_deleteVideo {
   position: absolute;
   top: 0;

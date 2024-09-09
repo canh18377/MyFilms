@@ -15,7 +15,7 @@ function ContinuteNumber({
 
   const HandleSubmit = async (event) => {
     event.preventDefault();
-    const APIUser = "http://localhost:8080/account";
+    const APIUser = "http://192.168.1.5:8080/account";
     try {
       const response = await fetch(APIUser, {
         method: "POST",

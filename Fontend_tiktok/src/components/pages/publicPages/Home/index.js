@@ -38,7 +38,7 @@ function Home() {
   console.log(profileInfoLocal);
   useEffect(() => {
     console.log(profileInfoLocal);
-    fetch(`http://localhost:8080`, {
+    fetch(`http://192.168.1.5:8080`, {
       headers: { "Content-type": "application/json" },
     })
       .then((res) => {
@@ -57,7 +57,7 @@ function Home() {
   }, []);
 
   const sendList_likeVideo = (likedVideo, persionalLike) => {
-    const url = `http://localhost:8080/likeVideos`;
+    const url = `http://192.168.1.5:8080/likeVideos`;
     const formData = new FormData();
     formData.append("likedVideo", JSON.stringify(likedVideo));
     formData.append("persionalLike", JSON.stringify(persionalLike));
@@ -99,7 +99,7 @@ function Home() {
   // Lay list follow
   useEffect(() => {
     try {
-      fetch(`http://localhost:8080/listFollow/${profileInfoLocal.author}`, {
+      fetch(`http://192.168.1.5:8080/listFollow/${profileInfoLocal.author}`, {
         headers: { "Content-type": "application/json" },
       })
         .then((res) => {

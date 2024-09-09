@@ -7,8 +7,17 @@ function SignUp({ setIsLogIn }) {
   const [account, setAccount] = useState({ name: "", password: "" });
   const handleSignUp = async (event) => {
     event.preventDefault();
+
+    if ((account.name === "") | (account.password === "")) {
+      message.warning("Vui lòng nhập đủ thông tin");
+      return;
+    }
+    if (account.password.length < 8) {
+      message.warning("Mật khẩu phải trên 8 ký tự ");
+      return;
+    }
     try {
-      const response = await fetch("http://localhost:8080/account/create", {
+      const response = await fetch("http://192.168.1.5:8080/account/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(account),

@@ -11,6 +11,7 @@
   display: grid;
   grid-template-columns: 35% 1fr;
   align-items: start;
+
   margin-top: 20px;
 }
 .totalOfLike {
@@ -20,6 +21,7 @@
 .video video {
   object-fit: cover;
 }
+
 .content {
   border-radius: 20px;
   overflow: hidden;
