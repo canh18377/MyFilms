@@ -10,12 +10,14 @@
   display: grid;
   grid-template-columns: 10rem 1fr;
   height: calc(100vh - 64px);
+  align-items: center;
 }
 .content {
   height: calc(100vh - 64px);
   display: flex;
   width: 100%;
   justify-content: center;
+  align-items: center;
 }
 @media screen and (max-width: 1071px) {
   .container {

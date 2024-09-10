@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 function PagePersional({ setIsLoged, profileInfo }) {
   const [isLoading, setIsLoading] = useState(true);
+  const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
+
   useEffect(() => {
     const profilePhoto =
       JSON.parse(localStorage.getItem("profileInfo")) &&
@@ -21,7 +23,6 @@ function PagePersional({ setIsLoged, profileInfo }) {
     setIsLoged(false);
     navigate("/");
   };
-  console.log("profileInfo", profileInfo);
   if (isLoading) return;
   return (
     <div>
@@ -35,7 +36,14 @@ function PagePersional({ setIsLoged, profileInfo }) {
           <div className={clsx(Styles.iconBackground)}>
             <div className={clsx(Styles.openProfile)}>
               <UserOutlined style={{ marginRight: 7 }} />
-              <p onClick={() => navigate(`/profile/${profileInfo.author}`)}>
+              <p
+                onClick={() => {
+                  window.location.reload();
+                  navigate(
+                    `/profile/${profileInfoLocal && profileInfoLocal.author}`
+                  );
+                }}
+              >
                 View Profile
               </p>
             </div>

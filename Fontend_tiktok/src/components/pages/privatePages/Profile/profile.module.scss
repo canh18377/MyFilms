@@ -1,7 +1,7 @@
 .yourProfile {
   display: grid;
   grid-template-rows: 40% 1fr;
-  height: 100vh;
+  height: calc(100vh - 64px);
   width: 100vw;
   overflow-y: auto;
   overflow-x: hidden;
@@ -22,7 +22,7 @@
   color: rgb(196, 89, 89);
 }
 .yourInfo {
-  margin-left: 20px;
+  margin-left: 10%px;
   height: 100%;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
@@ -52,8 +52,8 @@
   width: 100%;
 }
 .profileAvatar {
-  width: 170px;
-  height: 170px;
+  width: 100%;
+  height: 80%;
   font-size: large;
 }
 
@@ -62,11 +62,40 @@
     grid-template-rows: 40% 1fr;
   }
   .yourInfo {
-    font-size: 10px;
+    font-size: 8px;
   }
   .profileAvatar {
+    width: 140px;
+    height: 140px;
+    font-size: small;
+  }
+}
+@media screen and (max-width: 375px) {
+  .idProfile {
     width: 100px;
-    height: 100px;
+    word-wrap: break-word;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .yourInfo {
+    font-size: 16px;
+  }
+  .profileAvatar {
+    width: 100%;
+    height: 45%;
+    font-size: small;
+  }
+  .yourProfile {
+    grid-template-rows: 50% 1fr;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .yourInfo {
+    font-size: 20px;
+  }
+  .profileAvatar {
+    width: 100%;
+    height: 40%;
     font-size: small;
   }
 }

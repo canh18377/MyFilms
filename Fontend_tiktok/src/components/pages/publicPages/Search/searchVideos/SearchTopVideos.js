@@ -12,7 +12,7 @@ function SearchTopVideos({ status, setStatus }) {
   console.log("contentSearch:", contentSearch);
   useEffect(() => {
     fetch(
-      `http://192.168.1.5:8080/search/topVideos/${encodeURIComponent(
+      `http://localhost:8080/search/topVideos/${encodeURIComponent(
         contentSearch
       )}`,
       {

@@ -133,19 +133,15 @@ function Following() {
                   }
                 />
               </div>
-              <div style={{ height: 55, marginBottom: 60 }}>
-                <HeartOutlined
-                  onClick={() => handleTym(video._id)}
-                  className={clsx(Styles.heartVideo, {
-                    [Styles.likedVideo]: likedVideo.includes(video._id),
-                  })}
-                />
-                <p className={clsx(Styles.totalOfLike)}>
-                  {likedVideo.includes(video._id)
-                    ? video.likes + 1
-                    : video.likes}
-                </p>
-              </div>
+              <HeartOutlined
+                onClick={() => handleTym(video._id)}
+                className={clsx(Styles.heartVideo, {
+                  [Styles.likedVideo]: likedVideo.includes(video._id),
+                })}
+              />
+              <p className={clsx(Styles.totalOfLike)}>
+                {likedVideo.includes(video._id) ? video.likes + 1 : video.likes}
+              </p>
 
               <CommentOutlined
                 className={clsx(Styles.commentVideo)}

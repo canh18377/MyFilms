@@ -1,5 +1,6 @@
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import clsx from "clsx";
+import { memo } from "react";
 import Styles from "../../videos.module.scss";
 import { message } from "antd";
 
@@ -22,7 +23,7 @@ function HandleFollow({
       console.log(author);
       console.log(profileInfoLocal && profileInfoLocal.author);
 
-      const response = await fetch("http://192.168.1.5:8080/handleFollow", {
+      const response = await fetch("http://localhost:8080/handleFollow", {
         headers: { "Content-type": "application/json" },
         method: "POST",
         body: JSON.stringify({
@@ -65,4 +66,4 @@ function HandleFollow({
   );
 }
 
-export default HandleFollow;
+export default memo(HandleFollow);

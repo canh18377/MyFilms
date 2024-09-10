@@ -3,6 +3,7 @@
   margin-left: 10%;
   width: 100%;
   overflow-y: auto;
+
   scroll-snap-type: y mandatory; /* Kích hoạt chế độ snap cuộn theo trục y */
 }
 .containerVideo {
@@ -10,9 +11,8 @@
   width: 100%;
   display: grid;
   grid-template-columns: 35% 1fr;
-  align-items: start;
-
   margin-top: 20px;
+  scroll-snap-align: start;
 }
 .totalOfLike {
   font-size: 1.3rem;
@@ -44,11 +44,12 @@
 .actionItemContainer {
   display: grid;
   grid-column: 1fr;
-  grid-template-rows: 28% 15% 5%;
+  grid-template-rows: 24% 7% 5% 10%;
   margin-left: 2%;
   position: relative;
   height: 100%;
   margin-top: 5%;
+  margin-left: 2%;
 }
 .follow_followed {
   position: absolute;
@@ -126,6 +127,16 @@
     font-size: 2rem;
     margin: 8px;
   }
+  .actionItemContainer {
+    display: grid;
+    grid-column: 1fr;
+    grid-template-rows: 24% 7% 5% 10%;
+    margin-left: 2%;
+    position: relative;
+    height: 100%;
+    margin-top: 5%;
+    margin-left: 8%;
+  }
 }
 //moblile
 @media screen and (min-width: 545px) and (max-width: 768px) {
@@ -139,22 +150,55 @@
     grid-template-rows: 25% 18% 5%;
     margin-top: 35px;
   }
+  .actionItemContainer {
+    display: grid;
+    grid-column: 1fr;
+    grid-template-rows: 24% 7% 5% 10%;
+    margin-left: 2%;
+    position: relative;
+    height: 100%;
+    margin-top: 5%;
+    margin-left: 4%;
+  }
 }
 @media screen and (max-width: 545px) {
+  .container {
+    height: 100%;
+    margin-left: 10%;
+    width: 100%;
+  }
   .actionItemContainer {
-    grid-template-rows: 25% 18% 5%;
+    grid-template-rows: 30% 10% 6% 8%;
+    align-items: end;
   }
   .video video {
     object-fit: fill;
   }
   .containerVideo {
-    grid-template-columns: 80% 1fr;
+    grid-template-columns: 87% auto;
+    align-items: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: proximity;
   }
   .content {
-    height: 60%;
+    height: 65%;
   }
-  body,
-  html {
-    font-size: 12px;
+  .commentVideo,
+  .heartVideo {
+    font-size: 1.7rem;
+    cursor: pointer;
+  }
+  .avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .totalOfLike {
+    font-size: 1.2rem;
+    margin: 8px;
+  }
+  .follow_followed {
+    position: absolute;
+    top: 24px;
+    margin-left: 12px;
   }
 }

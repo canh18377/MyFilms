@@ -115,7 +115,6 @@ const UploadVideo = () => {
                   onChange={convertVideo}
                 />
                 <label htmlFor="file-upload">
-                  {console.log(infoVideoUpload.fileVideo)}
                   {infoVideoUpload.fileVideo === ""
                     ? "Chọn video"
                     : infoVideoUpload.fileVideo.name}

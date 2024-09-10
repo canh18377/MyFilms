@@ -71,7 +71,12 @@ function Profile() {
 
           <div className={clsx(Styles.yourInfo)}>
             <h4>Tên:{profileInfo.name}</h4>
-            {profileInfo.author && <h4> id:{profileInfo.author}</h4>}
+            {profileInfo.author && (
+              <h4 className={clsx(Styles.idProfile)}>
+                {" "}
+                id:{profileInfo.author}
+              </h4>
+            )}
             <div className={clsx(Styles.modifyInfo)}>
               <List_Follower_Following />
             </div>

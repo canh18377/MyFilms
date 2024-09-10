@@ -20,7 +20,6 @@ function Home() {
   const [autoPlay, setAutoPlay] = useState(false);
   const [videoHome, setVideoHome] = useState([]);
   const [listFollow, setListFollow] = useState([]);
-
   const [likedVideo, setLikedVideo] = useState(() => {
     try {
       const storedLikedVideo = localStorage.getItem("likedVideo");
@@ -38,7 +37,7 @@ function Home() {
   console.log(profileInfoLocal);
   useEffect(() => {
     console.log(profileInfoLocal);
-    fetch(`http://192.168.1.5:8080`, {
+    fetch(`http://localhost:8080`, {
       headers: { "Content-type": "application/json" },
     })
       .then((res) => {
@@ -57,7 +56,7 @@ function Home() {
   }, []);
 
   const sendList_likeVideo = (likedVideo, persionalLike) => {
-    const url = `http://192.168.1.5:8080/likeVideos`;
+    const url = `http://localhost:8080/likeVideos`;
     const formData = new FormData();
     formData.append("likedVideo", JSON.stringify(likedVideo));
     formData.append("persionalLike", JSON.stringify(persionalLike));
@@ -99,7 +98,7 @@ function Home() {
   // Lay list follow
   useEffect(() => {
     try {
-      fetch(`http://192.168.1.5:8080/listFollow/${profileInfoLocal.author}`, {
+      fetch(`http://localhost:8080/listFollow/${profileInfoLocal.author}`, {
         headers: { "Content-type": "application/json" },
       })
         .then((res) => {
@@ -117,13 +116,16 @@ function Home() {
     }
   }, []);
   // hiển thị,lưu trữ follow tạm thời
-  const changeFollower = (author) => {
-    setListFollow((pre) => {
-      if (pre.includes(author)) {
-        return pre.filter((id) => id !== author);
-      } else return [...pre, author];
-    });
-  };
+  const changeFollower = useCallback(
+    (author) => {
+      setListFollow((pre) => {
+        if (pre.includes(author)) {
+          return pre.filter((id) => id !== author);
+        } else return [...pre, author];
+      });
+    },
+    [listFollow]
+  );
 
   if (videoHome.length === 0) {
     return;
@@ -169,19 +171,16 @@ function Home() {
                     )}
                 </div>
               </div>
-              <div style={{ height: 55, marginBottom: 60 }}>
-                <HeartOutlined
-                  onClick={() => handleTym(video._id)}
-                  className={clsx(Styles.heartVideo, {
-                    [Styles.likedVideo]: likedVideo.includes(video._id),
-                  })}
-                />
-                <p className={clsx(Styles.totalOfLike)}>
-                  {likedVideo.includes(video._id)
-                    ? video.likes + 1
-                    : video.likes}
-                </p>
-              </div>
+
+              <HeartOutlined
+                onClick={() => handleTym(video._id)}
+                className={clsx(Styles.heartVideo, {
+                  [Styles.likedVideo]: likedVideo.includes(video._id),
+                })}
+              />
+              <p className={clsx(Styles.totalOfLike)}>
+                {likedVideo.includes(video._id) ? video.likes + 1 : video.likes}
+              </p>
 
               <CommentOutlined
                 className={clsx(Styles.commentVideo)}
