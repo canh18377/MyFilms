@@ -15,7 +15,7 @@ function ContinuteNumber({
 
   const HandleSubmit = async (event) => {
     event.preventDefault();
-    const APIUser = "http://192.168.1.5:8080/account";
+    const APIUser = "http://localhost:8080/account";
     try {
       const response = await fetch(APIUser, {
         method: "POST",
@@ -69,8 +69,8 @@ function ContinuteNumber({
         />
       </div>
       <div className={clsx(Styles.containerButton)}>
-        <Button htmlType="submit" className={clsx(Styles.button)}>
-          LogIn
+        <Button htmlType="submit" className={Styles.buttonLogIn}>
+          <span>Log In</span>
         </Button>
       </div>
       <div className={clsx(Styles.footer)}>

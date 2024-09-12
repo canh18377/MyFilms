@@ -10,7 +10,7 @@ function CommentSection({
   idVideo,
   avaiable,
   profileLocalstorage,
-  setISLoading,
+  setIsReload,
   setvideo_Owner_CommentsInfo,
 }) {
   const like_disLike_List_Ref = useRef();
@@ -48,15 +48,9 @@ function CommentSection({
   const handleStoreComments = async (event) => {
     event.preventDefault();
     if (contentComment.text.trim() === "") {
-      message.error("Bạn chưa nhập gì!");
+      message.warning("Bạn chưa nhập gì!");
       return;
     }
-    setvideo_Owner_CommentsInfo((prev) => {
-      return {
-        ...prev,
-        videoComments: [...prev.videoComments, contentComment],
-      };
-    });
     try {
       const response = await fetch(
         "http://localhost:8080/videoComments/storeComment",
@@ -73,6 +67,7 @@ function CommentSection({
       }
       const data = await response.json();
       setContentComment({ ...contentComment, text: "" });
+      setIsReload((prev) => !prev);
       console.log("new comment", data);
     } catch (error) {
       console.log(error);
@@ -94,8 +89,6 @@ function CommentSection({
     navigator.sendBeacon(url, formData);
   };
   useEffect(() => {
-    console.log("được chạy");
-
     return () => {
       console.log("đã mount");
       console.log(like_disLike_List_Ref.current);
@@ -110,7 +103,7 @@ function CommentSection({
       ) : (
         <div className={clsx(Styles.currentUser)}>
           <div className={clsx(Styles.currentUser_Img)}>
-            <Avatar src={currentUser && currentUser.currentUserImg} />
+            <Avatar size={30} src={currentUser && currentUser.currentUserImg} />
             <em style={{ color: "gray", fontSize: "small" }}>
               #{currentUser && currentUser.currentUserFullName}
             </em>
@@ -120,6 +113,7 @@ function CommentSection({
             className={clsx(Styles.formComment)}
           >
             <input
+              placeholder="Add Comment..."
               className={clsx(Styles.input)}
               value={contentComment.text}
               onChange={(e) =>
@@ -127,11 +121,7 @@ function CommentSection({
               }
             />
 
-            <Button
-              htmlType="submit"
-              type="primary"
-              className={clsx(Styles.post)}
-            >
+            <Button htmlType="submit" className={clsx(Styles.post)}>
               Post
             </Button>
           </form>
@@ -151,10 +141,7 @@ function CommentSection({
                   />
                   <p>{comment.fullName}</p>
                   <p style={{ color: "gray" }}>
-                    #
-                    {comment.updatedAt
-                      ? convertDate(comment.updatedAt)
-                      : "Vừa xong"}
+                    #{convertDate(comment.updatedAt)}
                   </p>
                 </div>
                 <div className={clsx(Styles.contentComment)}>
@@ -167,7 +154,7 @@ function CommentSection({
                       currentUser={currentUser}
                       contentComment={comment.text}
                       idComment={comment._id}
-                      setISLoading={setISLoading}
+                      setIsReload={setIsReload}
                       replies={comment.replies}
                     />
                   </div>

@@ -6,24 +6,37 @@
 }
 .containerVideo_Info {
   display: grid;
-  grid-template-rows: 75% 1fr;
+  grid-template-rows: 100%;
   margin: 5px;
-  height: 50%;
+  height: 55%;
   width: 14%;
-  overflow: hidden;
+
   position: relative;
-  border-radius: 5px;
   box-shadow: 0 0 1px 1px rgba(9, 9, 9, 0.1);
 }
-.containerVideo video {
-  object-fit: fill;
-  border-radius: 5px;
-}
 .videoInfo {
+  position: absolute;
+  bottom: 0;
+  color: rgb(237, 231, 231);
+  left: 0;
+  height: 30px;
   overflow-y: auto;
 }
 .videoInfo::-webkit-scrollbar {
   height: 0;
+}
+.nameVideo {
+  width: 100%;
+  overflow-x: auto;
+}
+.name_match {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.containerVideo video {
+  object-fit: fill;
+  border-radius: 5px;
 }
 
 .update_deleteVideo {
@@ -31,16 +44,32 @@
   top: 0;
   right: 0;
 }
+.containerVideo_Info_Liked {
+  display: grid;
+  grid-template-rows: 100%;
+  margin: 5px;
+  height: 34%;
+  width: 14%;
+  position: relative;
+  border-radius: 5px;
+  cursor: pointer;
+
+  box-shadow: 0 0 1px 1px rgba(9, 9, 9, 0.1);
+}
 
 //moblile
 @media screen and (max-width: 768px) and (min-width: 545px) {
   .containerVideo_Info {
-    height: 40%;
+    height: 35%;
     width: 25%;
   }
   .containerVideo video {
     object-fit: fill;
     border-radius: 5px;
+  }
+  .containerVideo_Info_Liked {
+    height: 24%;
+    width: 27%;
   }
 }
 @media screen and (max-width: 545px) {
@@ -51,5 +80,20 @@
   .containerVideo video {
     object-fit: cover;
     border-radius: 5px;
+  }
+  .containerVideo_Info_Liked {
+    height: 38%;
+    width: 27%;
+  }
+}
+//tablet
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .containerVideo_Info {
+    height: 50%;
+    width: 27%;
+  }
+  .containerVideo_Info_Liked {
+    height: 50%;
+    width: 27%;
   }
 }

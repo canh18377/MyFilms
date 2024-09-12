@@ -14,16 +14,27 @@
   margin: 10px;
   border-radius: 10px;
   overflow: hidden;
+  position: relative;
+}
+.infoVideo {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  color: rgb(237, 242, 246);
+  overflow-y: auto;
+  height: 15px;
+}
+.infoVideo::-webkit-scrollbar {
+  height: 0;
 }
 
 .video video {
-  object-fit: cover;
+  object-fit: fill;
   border-radius: 10px;
 }
 .genre {
   font-size: xx-small;
   overflow: hidden;
-  color: blue;
   overflow-y: auto;
   height: 20px;
 }

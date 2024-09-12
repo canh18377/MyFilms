@@ -2,11 +2,11 @@ import {
   LikeOutlined,
   DeleteOutlined,
   DislikeOutlined,
-  ToolOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import clsx from "clsx";
 import Styles from "./actionComment.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { message, Modal } from "antd";
 
 function ActionComment({
@@ -14,8 +14,8 @@ function ActionComment({
   idCommenter,
   contentComment,
   idComment,
-  setISLoading,
   replies,
+  setIsReload,
   like_disLike_List,
   setLike_disLike_List,
 }) {
@@ -30,6 +30,8 @@ function ActionComment({
   });
 
   const deleteComment = async () => {
+    if (!idComment) {
+    }
     try {
       const response = await fetch(
         "http://localhost:8080/videoComments/deleteComment",
@@ -47,8 +49,8 @@ function ActionComment({
         message.error(data.error);
       } else {
         setIsModalDeleteComment(false);
+        setIsReload((pre) => !pre);
         message.success(data.success);
-        setISLoading((pre) => !pre);
       }
     } catch (error) {
       console.log(error);
@@ -78,7 +80,7 @@ function ActionComment({
       } else {
         setIsModalUpdateComment(false);
         message.success(data.success);
-        setISLoading((pre) => !pre);
+        setIsReload((pre) => !pre);
       }
     } catch (error) {
       console.log(error);
@@ -167,7 +169,7 @@ function ActionComment({
       )}
       {currentUser && currentUser.currentUserId === idCommenter && (
         <div>
-          <ToolOutlined
+          <FormOutlined
             onClick={() => setIsModalUpdateComment(true)}
             className={clsx(Styles.actionComment)}
           />

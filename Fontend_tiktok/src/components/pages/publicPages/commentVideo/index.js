@@ -11,6 +11,7 @@ function VideoComments() {
   const { idVideo } = useParams();
   const [video_Owner_CommentsInfo, setvideo_Owner_CommentsInfo] = useState();
   const [isLoading, setISLoading] = useState(true);
+  const [reload, setIsReload] = useState(null);
 
   useEffect(() => {
     profileLocalstorage = JSON.parse(localStorage.getItem("profileInfo"));
@@ -37,7 +38,7 @@ function VideoComments() {
       console.log(error);
     }
     console.log(profileLocalstorage);
-  }, [isLoading]);
+  }, [isLoading, reload]);
 
   if (isLoading) {
     return <Progress size={{ height: 2 }} percent={75} status={"normal"} />;
@@ -95,11 +96,11 @@ function VideoComments() {
               currentUserFullName: profileLocalstorage.name,
             }
           }
+          setIsReload={setIsReload}
           commentData={video_Owner_CommentsInfo.videoComments}
           idVideo={video_Owner_CommentsInfo.video._id}
           avaiable={video_Owner_CommentsInfo.videoComments}
           profileLocalstorage={profileLocalstorage}
-          setISLoading={setISLoading}
           setvideo_Owner_CommentsInfo={setvideo_Owner_CommentsInfo}
         />
       </div>

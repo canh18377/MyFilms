@@ -19,8 +19,11 @@
   padding-left: 5px;
   height: auto;
   overflow-y: auto;
-  background-color: rgb(231, 228, 225);
   overflow-x: hidden;
+}
+.currentUser_Img {
+  display: flex;
+  flex-direction: column;
 }
 .ownerInfo {
   display: flex;

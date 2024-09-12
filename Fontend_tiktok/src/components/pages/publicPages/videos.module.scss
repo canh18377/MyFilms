@@ -10,13 +10,13 @@
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 35% 1fr;
+  grid-template-columns: 33% 1fr;
   margin-top: 20px;
   scroll-snap-align: start;
 }
 .totalOfLike {
   font-size: 1.3rem;
-  margin: 8px;
+  margin: 8px 0 0 16px;
 }
 .video video {
   object-fit: cover;
@@ -51,6 +51,14 @@
   margin-top: 5%;
   margin-left: 2%;
 }
+.heartVideo {
+  background-color: rgb(230, 229, 229);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+}
+
 .follow_followed {
   position: absolute;
   top: 30px;
@@ -76,6 +84,9 @@
 .heartVideo {
   font-size: 2rem;
   cursor: pointer;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
 }
 .likedVideo {
   color: red;
@@ -178,11 +189,13 @@
     grid-template-columns: 87% auto;
     align-items: center;
     scroll-snap-align: start;
+
     scroll-snap-stop: proximity;
   }
   .content {
     height: 65%;
   }
+
   .commentVideo,
   .heartVideo {
     font-size: 1.7rem;
@@ -191,10 +204,11 @@
   .avatar {
     width: 2.5rem;
     height: 2.5rem;
+    margin-left: 3px;
   }
   .totalOfLike {
     font-size: 1.2rem;
-    margin: 8px;
+    margin: 8px 0 0 0 12px;
   }
   .follow_followed {
     position: absolute;

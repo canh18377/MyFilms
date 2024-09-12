@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import { useState, useEffect, useContext, useMemo, useCallback } from "react";
 import ReactPlayer from "react-player";
-import { HeartOutlined, CommentOutlined } from "@ant-design/icons";
+import { HeartFilled, CommentOutlined } from "@ant-design/icons";
 import { Avatar, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
 function Following() {
@@ -133,7 +133,7 @@ function Following() {
                   }
                 />
               </div>
-              <HeartOutlined
+              <HeartFilled
                 onClick={() => handleTym(video._id)}
                 className={clsx(Styles.heartVideo, {
                   [Styles.likedVideo]: likedVideo.includes(video._id),

@@ -17,7 +17,7 @@ function SignUp({ setIsLogIn }) {
       return;
     }
     try {
-      const response = await fetch("http://192.168.1.5:8080/account/create", {
+      const response = await fetch("http://localhost:8080/account/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(account),

@@ -17,9 +17,10 @@
 .input {
   height: 34px;
   width: 100%;
-  border-radius: 30px;
-  outline: none;
+  border-radius: 10px;
   border: none;
+  outline: none;
+  background-color: rgb(245, 246, 247);
   font-size: small;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
@@ -33,7 +34,6 @@
   align-items: center;
 }
 .contentComment {
-  background-color: rgb(224, 229, 235);
   position: relative;
   font-family: "Times New Roman", Times, serif;
   color: rgb(79, 79, 14);
@@ -56,7 +56,7 @@
   height: 0;
 }
 .post {
-  border-radius: 40px;
+  border-radius: 10px;
 }
 @media screen and (max-width: 768px) {
   .currentUser_Img {

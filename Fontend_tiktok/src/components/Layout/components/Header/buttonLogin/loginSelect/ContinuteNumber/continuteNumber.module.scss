@@ -29,14 +29,9 @@
   justify-content: space-around;
 }
 
-.button {
-  width: 90%;
+.buttonLogIn {
+  width: 70%;
   background-color: rgb(254, 44, 85);
   height: 30px;
-  border: none;
   border-radius: 120px;
-}
-
-.button:hover {
-  transform: scale(0.9);
 }

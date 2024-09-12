@@ -14,6 +14,8 @@ function VideoUpLoaded({ author }) {
   const [videos, setVideos] = useState([]);
   const [isOpenTool, setIsOpenTool] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [playVideo, setPlayVideo] = useState(null);
+
   useEffect(() => {
     profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     fetch(`http://localhost:8080/profile/videos/${author}`, {
@@ -51,18 +53,22 @@ function VideoUpLoaded({ author }) {
     <div className={clsx(Styles.containerVideos)}>
       {videos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo_Info)}>
+          <div
+            key={index}
+            onMouseMove={() => setPlayVideo(video._id)}
+            onMouseLeave={() => setPlayVideo(null)}
+            className={clsx(Styles.containerVideo_Info)}
+          >
             <ReactPlayer
               className={clsx(Styles.containerVideo)}
               width={"100%"}
+              playing={video._id === playVideo}
               height={"100%"}
               url={video.path}
             />
             <div className={clsx(Styles.videoInfo)}>
-              <p style={{ fontSize: "90%" }}>@{video.name}</p>
-              <u style={{ fontSize: "small", disulay: "block" }}>
-                Match: {video.limitedAge}
-              </u>
+              <p className={Styles.nameVideo}>@{video.name}</p>
+              <u>Match: {video.limitedAge}</u>
 
               {
                 <div className={clsx(Styles.genre)}>
@@ -77,7 +83,7 @@ function VideoUpLoaded({ author }) {
               }
             </div>{" "}
             <div className={clsx(Styles.update_deleteVideo)}>
-              {profileInfoLocal.author === author && (
+              {profileInfoLocal && profileInfoLocal.author === author && (
                 <EllipsisOutlined
                   onClick={() => toggleTool(video._id)}
                   style={{ color: "white", fontSize: 20 }}

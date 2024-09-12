@@ -1,18 +1,22 @@
 .yourProfile {
   display: grid;
-  grid-template-rows: 40% 1fr;
+  grid-template-rows: 55% 1fr;
   height: calc(100vh - 64px);
   width: 100vw;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .infoProfile {
-  display: flex;
+  display: grid;
   width: 100%;
+  grid-template-columns: 14% auto;
+  grid-template-rows: 70%;
   font-family: Georgia, "Times New Roman", Times, serif;
   box-sizing: border-box;
   margin-left: 13%;
-  margin-top: 7%;
+  margin-top: 3%;
+  font-size: 100px;
+  align-items: center;
 }
 
 .yourCaption {
@@ -22,8 +26,12 @@
   color: rgb(196, 89, 89);
 }
 .yourInfo {
-  margin-left: 10%px;
+  margin-left: 2%;
   height: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14%;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 .modifyInfo {
@@ -53,21 +61,41 @@
 }
 .profileAvatar {
   width: 100%;
-  height: 80%;
-  font-size: large;
+  height: 200px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 570px) {
   .yourProfile {
     grid-template-rows: 40% 1fr;
   }
   .yourInfo {
-    font-size: 8px;
+    font-size: 8%;
+  }
+
+  .infoProfile {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 30% auto;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    box-sizing: border-box;
   }
   .profileAvatar {
-    width: 140px;
+    width: 100%;
     height: 140px;
-    font-size: small;
+  }
+}
+@media screen and (min-width: 570px) and (max-width: 767px) {
+  .infoProfile {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 30% auto;
+    grid-template-rows: 70%;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    box-sizing: border-box;
+    margin-left: 13%;
+    margin-top: 3%;
+    font-size: 100px;
+    align-items: center;
   }
 }
 @media screen and (max-width: 375px) {
@@ -76,26 +104,24 @@
     word-wrap: break-word;
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+//tablet
+@media screen and (min-width: 767px) and (max-width: 1023px) {
   .yourInfo {
-    font-size: 16px;
+    font-size: 14%;
+  }
+  .infoProfile {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 30% auto;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    box-sizing: border-box;
   }
   .profileAvatar {
     width: 100%;
-    height: 45%;
-    font-size: small;
+    height: 230px;
   }
+
   .yourProfile {
     grid-template-rows: 50% 1fr;
-  }
-}
-@media screen and (min-width: 1024px) {
-  .yourInfo {
-    font-size: 20px;
-  }
-  .profileAvatar {
-    width: 100%;
-    height: 40%;
-    font-size: small;
   }
 }

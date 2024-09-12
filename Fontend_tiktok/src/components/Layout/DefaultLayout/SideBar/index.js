@@ -17,7 +17,6 @@ function SideBar() {
   const handleNavProfile = () => {
     if (isLoged) {
       navigate(`/profile/${profileInfoLocal && profileInfoLocal.author}`);
-      window.location.reload();
     } else setIsModelOpen(true);
   };
 
