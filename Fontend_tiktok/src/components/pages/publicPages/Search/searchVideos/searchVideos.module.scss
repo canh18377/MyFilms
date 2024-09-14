@@ -41,6 +41,33 @@
 .genre::-webkit-scrollbar {
   height: 0;
 }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .containerVideo {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    height: 28%;
+    width: 30%;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .infoVideo {
+    position: absolute;
+    bottom: 0;
+    left: 2px;
+    color: rgb(237, 242, 246);
+    overflow-y: auto;
+    height: 30px;
+  }
+  .videoName {
+    font-size: 20px;
+  }
+  .genre {
+    font-size: small;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 20px;
+  }
+}
 @media screen and (max-width: 768px) {
   .containerVideo {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);

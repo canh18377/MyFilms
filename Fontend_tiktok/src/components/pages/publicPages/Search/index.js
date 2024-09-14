@@ -9,7 +9,6 @@ function Search() {
   const [status, setStatus] = useState(true);
   const { contentSearch } = useContext(SharedData);
   const [categorySearch, setCategorySearch] = useState("Users");
-  console.log(contentSearch);
   let Videos;
   if (categorySearch === "Users") {
     Videos = SearchUsers;

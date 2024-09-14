@@ -13,7 +13,6 @@ function Header() {
   const [backGroundColor, setBackGroundColor] = useState(false);
   const navigate = useNavigate();
   const inputSearchRef = useRef();
-  console.log(inputSearchRef);
 
   const {
     isLoged,

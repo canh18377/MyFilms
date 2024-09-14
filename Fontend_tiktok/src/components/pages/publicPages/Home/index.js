@@ -14,11 +14,28 @@ import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
 import HandleFollow from "./handleFollwing/HandleFollow";
+let timeout;
+const debounce = (callback, delay) => {
+  return () => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      callback();
+      timeout = null;
+    }, delay);
+  };
+};
 function Home() {
   const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
-  const [autoPlay, setAutoPlay] = useState(false);
-  const [videoHome, setVideoHome] = useState([]);
+  const videoContainerRef = useRef();
+  const [getVideo, setGetVideo] = useState(null);
+  const [currentVideo, setCurrentVideo] = useState("");
+  const [videoHome, setVideoHome] = useState({
+    ArrayVideos: [],
+    infoOwner: [],
+  });
   const [listFollow, setListFollow] = useState([]);
   const [likedVideo, setLikedVideo] = useState(() => {
     try {
@@ -34,9 +51,7 @@ function Home() {
     return profileInfoLocal;
   }, []);
 
-  console.log(profileInfoLocal);
   useEffect(() => {
-    console.log(profileInfoLocal);
     fetch(`http://localhost:8080`, {
       headers: { "Content-type": "application/json" },
     })
@@ -46,14 +61,18 @@ function Home() {
         } else return res.json();
       })
       .then((data) => {
-        console.log(data);
-        setVideoHome(data);
+        console.log("data", data);
+        setVideoHome((prev) => ({
+          ...prev,
+          infoOwner: [...prev.infoOwner, ...data.infoOwner],
+          ArrayVideos: [...prev.ArrayVideos, ...data.ArrayVideos],
+        }));
       })
       .catch((err) => {
         console.log(err);
         message.error("server bận");
       });
-  }, []);
+  }, [getVideo]);
 
   const sendList_likeVideo = (likedVideo, persionalLike) => {
     const url = `http://localhost:8080/likeVideos`;
@@ -73,7 +92,6 @@ function Home() {
   }, []);
   //lưu trữ dữ liệu like hiện tại
   useEffect(() => {
-    console.log(likedVideo);
     likeVideoref.current = likedVideo;
     localStorage.setItem("likedVideo", JSON.stringify(likedVideo));
   }, [likedVideo]);
@@ -127,20 +145,58 @@ function Home() {
     [listFollow]
   );
 
-  if (videoHome.length === 0) {
+  //check position
+  const checkPosition = () => {
+    if (videoContainerRef.current) {
+      const arrayVideo = Array.from(videoContainerRef.current.children);
+      arrayVideo.forEach((child) => {
+        const position = child.getBoundingClientRect();
+        if (position.top >= 0 && position.bottom <= window.innerHeight) {
+          setCurrentVideo(Number.parseInt(child.getAttribute("data-index")));
+          if (
+            Number.parseInt(child.getAttribute("data-index")) ===
+            videoHome.ArrayVideos.length - 1
+          )
+            message.loading("Đang tải thêm video,vui lòng đợi");
+          setTimeout(() => {
+            setGetVideo((pre) => !pre);
+          }, 1000);
+        }
+      });
+    }
+  };
+  const debounceHandleScroll = debounce(checkPosition, 500);
+  useEffect(() => {
+    if (videoContainerRef.current) {
+      const container = videoContainerRef.current;
+      container.addEventListener("scroll", debounceHandleScroll);
+      return () => {
+        container.removeEventListener("scroll", debounceHandleScroll);
+      };
+    }
+  }, [videoHome]);
+
+  if (videoHome.ArrayVideos.length === 0) {
     return;
   }
   return (
-    <div className={clsx(Styles.container)}>
+    <div className={clsx(Styles.container)} ref={videoContainerRef}>
       {videoHome.ArrayVideos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
+          <div
+            key={index}
+            data-index={index}
+            className={clsx(Styles.containerVideo)}
+          >
             <div className={clsx(Styles.content)}>
               <ReactPlayer
-                playing={autoPlay}
+                muted={true}
                 controls
+                playing={currentVideo === index}
+                loop={true}
                 width={"100%"}
                 height={"100%"}
+                onError={(e) => console.error("Video error:", e)}
                 url={video.path}
                 className={clsx(Styles.video)}
               />

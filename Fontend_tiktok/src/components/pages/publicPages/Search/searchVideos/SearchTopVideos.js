@@ -1,39 +1,67 @@
 import { SharedData } from "../../../../Layout/DefaultLayout";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { message, Progress } from "antd";
 import clsx from "clsx";
 import Styles from "./searchVideos.module.scss";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
+let timeout;
+const debounce = (callback, delay) => {
+  return function () {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      callback();
+      timeout = null;
+    }, delay);
+  };
+};
 function SearchTopVideos({ status, setStatus }) {
   const [foundVideos, setFoundVideos] = useState([]);
   const { contentSearch } = useContext(SharedData);
   const Navigate = useNavigate();
-  console.log("contentSearch:", contentSearch);
+  const getSearch = useCallback(() => {
+    console.log("duoc thuc thi");
+    try {
+      fetch(
+        `http://localhost:8080/search/topVideos/${encodeURIComponent(
+          contentSearch
+        )}`,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+        .then((res) => {
+          if (!res.ok) {
+            message.error("server bận");
+          } else return res.json();
+        })
+        .then((data) => {
+          const { listVideos } = data;
+          console.log(listVideos);
+          setFoundVideos(listVideos);
+          setStatus(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error("Có lỗi xảy ra");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [contentSearch]);
   useEffect(() => {
-    fetch(
-      `http://localhost:8080/search/topVideos/${encodeURIComponent(
-        contentSearch
-      )}`,
-      {
-        headers: { "Content-Type": "application/json" },
+    if (contentSearch.trim() === "") {
+      return;
+    }
+    const debounceSearch = debounce(getSearch, 1000);
+    debounceSearch();
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
       }
-    )
-      .then((res) => {
-        if (!res.ok) {
-          message.error("server bận");
-        } else return res.json();
-      })
-      .then((data) => {
-        const { listVideos } = data;
-        console.log(listVideos);
-        setFoundVideos(listVideos);
-        setStatus(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error("Có lỗi xảy ra");
-      });
+    };
   }, [contentSearch]);
   if (status) {
     return (
@@ -66,7 +94,7 @@ function SearchTopVideos({ status, setStatus }) {
               className={clsx(Styles.video)}
             />
             <div className={clsx(Styles.infoVideo)}>
-              <u style={{ fontSize: "small" }}>@{video.nameVideo}</u>
+              <u className={clsx(Styles.videoName)}>@{video.nameVideo}</u>
               {
                 <div className={clsx(Styles.genre)}>
                   {video.genres.map((genre, index) => {

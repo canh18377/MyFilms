@@ -11,6 +11,10 @@ function List_Follower_Following() {
   const { profileInfo } = useContext(SharedData);
   const [followList, setFollowList] = useState([]);
   const [openModalFollowList, setOpenModalFollowList] = useState(false);
+  const [totaOfFollow, setTotalOfFollow] = useState({
+    follower: 0,
+    follwing: 0,
+  });
   console.log(profileInfo);
   const getFollowList = async (isFollow) => {
     try {
