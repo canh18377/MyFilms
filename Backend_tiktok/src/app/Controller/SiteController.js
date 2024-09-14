@@ -56,6 +56,10 @@ class SiteController {
         user: req.params.author,
       });
       console.log(response);
+      if (!response) {
+        res.json({ Notification: "Bạn chưa theo dõi ai cả." });
+        return;
+      }
       const listFollow = response.following.map((id) => new ObjectId(id));
       const followingUserVideos = await UserVideos.aggregate([
         {
@@ -66,7 +70,7 @@ class SiteController {
         },
         {
           $sample: {
-            size: 5,
+            size: 10,
           },
         },
       ]);

@@ -6,6 +6,7 @@ import { Avatar, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
+
 function Following() {
   const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
@@ -34,6 +35,10 @@ function Following() {
         } else return res.json();
       })
       .then((data) => {
+        if (data.Notification) {
+          message.info(data.Notification);
+          return;
+        }
         console.log(data);
         setVideoFollowing(data);
       })

@@ -10,6 +10,8 @@ function LikedVideos({ author }) {
   const { profileInfo } = useContext(SharedData);
   console.log(author);
   const Navigate = useNavigate();
+  const [playVideo, setPlayVideo] = useState(null);
+
   const [likedVideos, setLikedVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -43,19 +45,7 @@ function LikedVideos({ author }) {
   }, [author]);
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "20%",
-        }}
-      >
-        <Progress type="dashboard" percent={50} showInfo={true} />
-        <p style={{ color: "red" }}> loading...</p>
-      </div>
-    );
+    return;
   }
   return (
     <div className={clsx(Styles.containerVideos)}>
@@ -64,11 +54,14 @@ function LikedVideos({ author }) {
           <div
             onClick={() => Navigate(`/videoComments/${video._id}`)}
             key={index}
+            onMouseMove={() => setPlayVideo(video._id)}
+            onMouseLeave={() => setPlayVideo(null)}
             className={clsx(Styles.containerVideo_Info_Liked)}
           >
             <ReactPlayer
               className={clsx(Styles.containerVideo)}
               width={"100%"}
+              playing={video._id === playVideo}
               height={"100%"}
               url={video.path}
             />

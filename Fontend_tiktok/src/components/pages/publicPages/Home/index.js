@@ -30,7 +30,7 @@ function Home() {
   const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
   const videoContainerRef = useRef();
-  const [getVideo, setGetVideo] = useState(null);
+  const lengthVideo = useRef();
   const [currentVideo, setCurrentVideo] = useState("");
   const [videoHome, setVideoHome] = useState({
     ArrayVideos: [],
@@ -52,27 +52,34 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080`, {
-      headers: { "Content-type": "application/json" },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          message.error("server bận!");
-        } else return res.json();
+    getVideo();
+  }, []);
+  const getVideo = () => {
+    try {
+      fetch(`http://localhost:8080`, {
+        headers: { "Content-type": "application/json" },
       })
-      .then((data) => {
-        console.log("data", data);
-        setVideoHome((prev) => ({
-          ...prev,
-          infoOwner: [...prev.infoOwner, ...data.infoOwner],
-          ArrayVideos: [...prev.ArrayVideos, ...data.ArrayVideos],
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error("server bận");
-      });
-  }, [getVideo]);
+        .then((res) => {
+          if (!res.ok) {
+            message.error("server bận!");
+          } else return res.json();
+        })
+        .then((data) => {
+          console.log("data", data);
+          setVideoHome((prev) => ({
+            ...prev,
+            infoOwner: [...prev.infoOwner, ...data.infoOwner],
+            ArrayVideos: [...prev.ArrayVideos, ...data.ArrayVideos],
+          }));
+        })
+        .catch((err) => {
+          console.log(err);
+          message.error("server bận");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const sendList_likeVideo = (likedVideo, persionalLike) => {
     const url = `http://localhost:8080/likeVideos`;
@@ -144,7 +151,7 @@ function Home() {
     },
     [listFollow]
   );
-
+  lengthVideo.current = videoHome.ArrayVideos.length;
   //check position
   const checkPosition = () => {
     if (videoContainerRef.current) {
@@ -158,9 +165,7 @@ function Home() {
             videoHome.ArrayVideos.length - 1
           )
             message.loading("Đang tải thêm video,vui lòng đợi");
-          setTimeout(() => {
-            setGetVideo((pre) => !pre);
-          }, 1000);
+          getVideo();
         }
       });
     }
@@ -198,6 +203,7 @@ function Home() {
                 height={"100%"}
                 onError={(e) => console.error("Video error:", e)}
                 url={video.path}
+                lazyload={video.path}
                 className={clsx(Styles.video)}
               />
             </div>

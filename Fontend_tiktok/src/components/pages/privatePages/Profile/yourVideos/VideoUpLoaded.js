@@ -49,6 +49,7 @@ function VideoUpLoaded({ author }) {
   if (isLoading) {
     return;
   }
+
   return (
     <div className={clsx(Styles.containerVideos)}>
       {videos.map((video, index) => {
