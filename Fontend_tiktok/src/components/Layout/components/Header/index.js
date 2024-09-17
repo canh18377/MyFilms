@@ -42,7 +42,7 @@ function Header() {
   };
   const handleSearch = (event) => {
     event.preventDefault();
-    setHistory((prev) => [...history, contentSearch]);
+    setHistory((prev) => [...prev, contentSearch]);
     navigate("/search");
   };
 
@@ -50,7 +50,7 @@ function Header() {
     <div className={clsx(Styles.header)}>
       <div onClick={() => handleNavigate()} className={clsx(Styles.logoHeader)}>
         <TikTokOutlined className={clsx(Styles.iconHeader)} />
-        <u className={clsx(Styles.logoText)}>TIKTOK</u>
+        <u className={clsx(Styles.logoText)}>MyFilms</u>
       </div>
       <Tippy
         interactive={true}
