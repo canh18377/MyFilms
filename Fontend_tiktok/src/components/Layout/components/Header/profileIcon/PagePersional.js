@@ -38,10 +38,10 @@ function PagePersional({ setIsLoged, profileInfo }) {
               <UserOutlined style={{ marginRight: 7 }} />
               <p
                 onClick={() => {
-                  window.location.reload();
                   navigate(
                     `/profile/${profileInfoLocal && profileInfoLocal.author}`
                   );
+                  window.location.reload();
                 }}
               >
                 View Profile

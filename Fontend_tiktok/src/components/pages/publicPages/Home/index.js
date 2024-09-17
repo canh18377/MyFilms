@@ -232,7 +232,6 @@ function Home() {
                 loop={true}
                 width={"100%"}
                 height={"100%"}
-                onError={(e) => console.error("Video error:", e)}
                 url={videoUrl[index]}
                 className={clsx(Styles.video)}
               />
