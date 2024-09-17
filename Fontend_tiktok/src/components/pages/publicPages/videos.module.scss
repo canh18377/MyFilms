@@ -30,6 +30,10 @@
   position: relative;
   scroll-snap-align: start;
 }
+.postponeVideo {
+  position: absolute;
+  top: 0;
+}
 
 .container::-webkit-scrollbar {
   height: 0;

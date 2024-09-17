@@ -1,26 +1,56 @@
 import clsx from "clsx";
-import { useState, useEffect, useContext, useMemo, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import ReactPlayer from "react-player";
-import { HeartFilled, CommentOutlined } from "@ant-design/icons";
+import {
+  HeartFilled,
+  CommentOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
 import { Avatar, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
-
+let timeout;
+let timeoutCLick;
+const debounce = (callback, delay) => {
+  return () => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      callback();
+      timeout = null;
+    }, delay);
+  };
+};
 function Following() {
   const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
-  const [autoPlay, setAutoPlay] = useState(false);
-  const [videoFollowing, setVideoFollowing] = useState([]);
+  const videoContainerRef = useRef();
+  const [videoUrl, setVideoUrl] = useState([]);
+  const [currentVideo, setCurrentVideo] = useState("");
+  const [videoFollowing, setVideoFollowing] = useState({
+    ArrayVideos: [],
+    infoOwner: [],
+  });
   const [likedVideo, setLikedVideo] = useState([]);
   const profileInfoLocal = useMemo(() => {
     var profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     return profileInfoLocal;
   }, []);
 
-  console.log(profileInfoLocal);
   useEffect(() => {
-    console.log(profileInfoLocal);
+    getVideo();
+  }, [isLoged]);
+
+  const getVideo = useCallback(() => {
     let APIUrl = "http://localhost:8080";
 
     if (isLoged) {
@@ -40,13 +70,23 @@ function Following() {
           return;
         }
         console.log(data);
-        setVideoFollowing(data);
+
+        setVideoFollowing((prev) => ({
+          ...prev,
+          infoOwner: [...prev.infoOwner, ...data.infoOwner],
+          ArrayVideos: [...prev.ArrayVideos, ...data.ArrayVideos],
+        }));
       })
       .catch((err) => {
         console.log(err);
         message.error("server bận");
       });
-  }, [isLoged]);
+  }, [isLoged, videoFollowing.ArrayVideos]);
+  useEffect(() => {
+    videoFollowing.ArrayVideos.forEach((video, index) => {
+      videoUrl[index] = video.path;
+    });
+  }, [videoFollowing.ArrayVideos]);
 
   useEffect(() => {
     var likedVideoLocal = localStorage.getItem("likedVideoLocal");
@@ -107,23 +147,82 @@ function Following() {
     [isLoged, likedVideo]
   );
 
+  //check position
+  const checkPosition = () => {
+    if (videoContainerRef.current) {
+      const arrayVideo = Array.from(videoContainerRef.current.children);
+      arrayVideo.forEach((child) => {
+        const position = child.getBoundingClientRect();
+        if (position.top >= 0 && position.bottom <= window.innerHeight) {
+          setCurrentVideo(Number.parseInt(child.getAttribute("data-index")));
+          if (
+            Number.parseInt(child.getAttribute("data-index")) ===
+            videoFollowing.ArrayVideos.length - 1
+          ) {
+            message.loading("Đang tải thêm video,vui lòng đợi");
+            getVideo();
+          }
+        }
+      });
+    }
+  };
+  const debounceHandleScroll = debounce(checkPosition, 500);
+  useEffect(() => {
+    if (videoContainerRef.current) {
+      const container = videoContainerRef.current;
+      container.addEventListener("scroll", debounceHandleScroll);
+      return () => {
+        container.removeEventListener("scroll", debounceHandleScroll);
+      };
+    }
+  }, [videoFollowing]);
+  //click video
+  function handleClickVideo(index, idVideo) {
+    if (timeoutCLick) {
+      clearTimeout(timeoutCLick);
+      handleTym(idVideo);
+      timeoutCLick = null;
+      return;
+    }
+    timeoutCLick = setTimeout(() => {
+      setCurrentVideo((prev) => {
+        if (prev === index) {
+          return null;
+        } else return index;
+      });
+      timeoutCLick = null;
+    }, 500);
+  }
+
   if (videoFollowing.length === 0) {
     return;
   }
   return (
-    <div className={clsx(Styles.container)}>
+    <div className={clsx(Styles.container)} ref={videoContainerRef}>
       {videoFollowing.ArrayVideos.map((video, index) => {
         return (
-          <div key={index} className={clsx(Styles.containerVideo)}>
-            <div className={clsx(Styles.content)}>
+          <div
+            key={index}
+            data-index={index}
+            className={clsx(Styles.containerVideo)}
+          >
+            <div
+              onClick={() => handleClickVideo(index, video._id)}
+              className={clsx(Styles.content)}
+            >
               <ReactPlayer
-                playing={autoPlay}
-                controls
+                loop={true}
+                playing={currentVideo === index}
                 width={"100%"}
                 height={"100%"}
-                url={video.path}
+                url={videoUrl[index]}
                 className={clsx(Styles.video)}
               />
+              {currentVideo !== index && (
+                <div className={clsx(Styles.postponeVideo)}>
+                  <PlayCircleOutlined style={{ fontSize: 30 }} />
+                </div>
+              )}
             </div>
 
             <div className={clsx(Styles.actionItemContainer)}>

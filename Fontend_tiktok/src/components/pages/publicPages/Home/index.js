@@ -8,13 +8,18 @@ import {
   useCallback,
 } from "react";
 import ReactPlayer from "react-player";
-import { HeartFilled, CommentOutlined } from "@ant-design/icons";
+import {
+  HeartFilled,
+  CommentOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
 import { Avatar, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
 import HandleFollow from "./handleFollwing/HandleFollow";
 let timeout;
+let timeoutCLick;
 const debounce = (callback, delay) => {
   return () => {
     if (timeout) {
@@ -30,7 +35,7 @@ function Home() {
   const { isLoged, setIsModelOpen } = useContext(SharedData);
   const Navigate = useNavigate();
   const videoContainerRef = useRef();
-  const lengthVideo = useRef();
+  const [videoUrl, setVideoUrl] = useState([]);
   const [currentVideo, setCurrentVideo] = useState("");
   const [videoHome, setVideoHome] = useState({
     ArrayVideos: [],
@@ -54,7 +59,8 @@ function Home() {
   useEffect(() => {
     getVideo();
   }, []);
-  const getVideo = () => {
+  const getVideo = useCallback(() => {
+    console.log("vo");
     try {
       fetch(`http://localhost:8080`, {
         headers: { "Content-type": "application/json" },
@@ -79,7 +85,12 @@ function Home() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [videoHome]);
+  useEffect(() => {
+    videoHome.ArrayVideos.forEach((video, index) => {
+      videoUrl[index] = video.path;
+    });
+  }, [videoHome.ArrayVideos]);
 
   const sendList_likeVideo = (likedVideo, persionalLike) => {
     const url = `http://localhost:8080/likeVideos`;
@@ -139,7 +150,7 @@ function Home() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [isLoged]);
   // hiển thị,lưu trữ follow tạm thời
   const changeFollower = useCallback(
     (author) => {
@@ -151,7 +162,6 @@ function Home() {
     },
     [listFollow]
   );
-  lengthVideo.current = videoHome.ArrayVideos.length;
   //check position
   const checkPosition = () => {
     if (videoContainerRef.current) {
@@ -163,15 +173,17 @@ function Home() {
           if (
             Number.parseInt(child.getAttribute("data-index")) ===
             videoHome.ArrayVideos.length - 1
-          )
+          ) {
             message.loading("Đang tải thêm video,vui lòng đợi");
-          getVideo();
+            getVideo();
+          }
         }
       });
     }
   };
   const debounceHandleScroll = debounce(checkPosition, 500);
   useEffect(() => {
+    checkPosition();
     if (videoContainerRef.current) {
       const container = videoContainerRef.current;
       container.addEventListener("scroll", debounceHandleScroll);
@@ -180,6 +192,23 @@ function Home() {
       };
     }
   }, [videoHome]);
+  //click video
+  function handleClickVideo(index, idVideo) {
+    if (timeoutCLick) {
+      clearTimeout(timeoutCLick);
+      handleTym(idVideo);
+      timeoutCLick = null;
+      return;
+    }
+    timeoutCLick = setTimeout(() => {
+      setCurrentVideo((prev) => {
+        if (prev === index) {
+          return null;
+        } else return index;
+      });
+      timeoutCLick = null;
+    }, 500);
+  }
 
   if (videoHome.ArrayVideos.length === 0) {
     return;
@@ -193,19 +222,25 @@ function Home() {
             data-index={index}
             className={clsx(Styles.containerVideo)}
           >
-            <div className={clsx(Styles.content)}>
+            <div
+              onClick={() => handleClickVideo(index, video._id)}
+              className={clsx(Styles.content)}
+            >
               <ReactPlayer
                 muted={true}
-                controls
                 playing={currentVideo === index}
                 loop={true}
                 width={"100%"}
                 height={"100%"}
                 onError={(e) => console.error("Video error:", e)}
-                url={video.path}
-                lazyload={video.path}
+                url={videoUrl[index]}
                 className={clsx(Styles.video)}
               />
+              {currentVideo !== index && (
+                <div className={clsx(Styles.postponeVideo)}>
+                  <PlayCircleOutlined style={{ fontSize: 30 }} />
+                </div>
+              )}
             </div>
 
             <div className={clsx(Styles.actionItemContainer)}>

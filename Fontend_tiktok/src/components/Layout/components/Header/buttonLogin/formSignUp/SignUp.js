@@ -28,6 +28,7 @@ function SignUp({ setIsLogIn }) {
       const data = await response.json();
       if (data.success) {
         message.success(data.success);
+        setIsLogIn(true);
       } else message.error(data.fail);
     } catch (error) {
       console.log(error);
@@ -44,6 +45,7 @@ function SignUp({ setIsLogIn }) {
             onChange={(e) => setAccount({ ...account, name: e.target.value })}
             className={clsx(Styles.inputName)}
             placeholder="Account"
+            type="email"
           />
           <input
             value={account.password}

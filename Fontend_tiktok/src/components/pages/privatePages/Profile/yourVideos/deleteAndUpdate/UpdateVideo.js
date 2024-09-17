@@ -18,6 +18,10 @@ function UpdateVideo(prop) {
   }, [genres]);
   console.log(prop);
   const handleUpdate = async () => {
+    if (videoInfo.nameVideo.length > 21) {
+      message.warning("Tên video chỉ tối đa 20 kí tự");
+      return;
+    }
     try {
       const response = await fetch(
         "http://localhost:8080/profile/updateVideo",
