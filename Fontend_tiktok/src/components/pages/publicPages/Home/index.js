@@ -12,14 +12,17 @@ import {
   HeartFilled,
   CommentOutlined,
   PlayCircleOutlined,
+  MutedOutlined,
+  SoundOutlined,
 } from "@ant-design/icons";
-import { Avatar, message } from "antd";
+import { Avatar, message, Slider } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
 import HandleFollow from "./handleFollwing/HandleFollow";
 let timeout;
 let timeoutCLick;
+let timeoutVolume;
 const debounce = (callback, delay) => {
   return () => {
     if (timeout) {
@@ -32,35 +35,69 @@ const debounce = (callback, delay) => {
   };
 };
 function Home() {
-  const { isLoged, setIsModelOpen } = useContext(SharedData);
+  const { isLoged, setIsModelOpen, setLikedVideo, likedVideo } =
+    useContext(SharedData);
   const Navigate = useNavigate();
   const videoContainerRef = useRef();
+  const [isMutedVolume, setIsMutedVolume] = useState(true);
+  const [volume, setVolume] = useState(1);
+  const [visibleVolumeBar, setVisibleVolumeBar] = useState(null);
   const [videoUrl, setVideoUrl] = useState([]);
   const [currentVideo, setCurrentVideo] = useState("");
   const [videoHome, setVideoHome] = useState({
     ArrayVideos: [],
     infoOwner: [],
   });
+  const [likeTotal, setLikeTotal] = useState([]);
   const [listFollow, setListFollow] = useState([]);
-  const [likedVideo, setLikedVideo] = useState(() => {
-    try {
-      const storedLikedVideo = localStorage.getItem("likedVideo");
-      return storedLikedVideo ? JSON.parse(storedLikedVideo) : [];
-    } catch (error) {
-      return [];
-    }
-  });
-  const likeVideoref = useRef(likedVideo);
   const profileInfoLocal = useMemo(() => {
     var profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     return profileInfoLocal;
-  }, []);
-
+  }, [isLoged]);
   useEffect(() => {
     getVideo();
   }, []);
+  useEffect(() => {
+    if (videoHome.ArrayVideos.length !== 0) {
+      const idVideo = videoHome.ArrayVideos.map((video) => video._id).join(",");
+      console.log(idVideo);
+      try {
+        fetch(
+          `http://localhost:8080/likedVideoHome/${
+            profileInfoLocal && profileInfoLocal.author
+          }/${idVideo}`,
+          {
+            headers: { "Content-type": "application/json" },
+          }
+        )
+          .then((res) => {
+            if (!res.ok) {
+              message.error("server bận!");
+            } else return res.json();
+          })
+          .then((data) => {
+            console.log("data", data);
+            setLikeTotal(
+              data.map((video) => ({
+                idVideo: video._id,
+                likes: video.likes,
+                mySelf:
+                  profileInfoLocal &&
+                  video.likeBy.includes(profileInfoLocal.author),
+              }))
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("server bận");
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [profileInfoLocal, videoHome.ArrayVideos]);
+
   const getVideo = useCallback(() => {
-    console.log("vo");
     try {
       fetch(`http://localhost:8080`, {
         headers: { "Content-type": "application/json" },
@@ -85,37 +122,65 @@ function Home() {
     } catch (error) {
       console.log(error);
     }
-  }, [videoHome]);
+  }, [videoHome, likeTotal, isLoged]);
   useEffect(() => {
     videoHome.ArrayVideos.forEach((video, index) => {
       videoUrl[index] = video.path;
     });
-  }, [videoHome.ArrayVideos]);
-
-  const sendList_likeVideo = (likedVideo, persionalLike) => {
-    const url = `http://localhost:8080/likeVideos`;
-    const formData = new FormData();
-    formData.append("likedVideo", JSON.stringify(likedVideo));
-    formData.append("persionalLike", JSON.stringify(persionalLike));
-    navigator.sendBeacon(url, formData);
-    localStorage.removeItem("likedVideo");
-  };
-  //gửi dữ liệu sau khi unmount
-  useEffect(() => {
-    return () =>
-      sendList_likeVideo(
-        likeVideoref.current,
-        profileInfoLocal && profileInfoLocal.author
+    console.log(likeTotal);
+    if (isLoged) {
+      setLikedVideo(
+        likeTotal
+          .map((likedVideo) => {
+            if (likedVideo.mySelf) return likedVideo.idVideo;
+            return null; // Trả về null nếu điều kiện không thỏa mãn.
+          })
+          .filter(Boolean) // Loại bỏ các giá trị null hoặc undefined.
       );
-  }, []);
-  //lưu trữ dữ liệu like hiện tại
-  useEffect(() => {
-    likeVideoref.current = likedVideo;
-    localStorage.setItem("likedVideo", JSON.stringify(likedVideo));
-  }, [likedVideo]);
+    }
+  }, [videoHome, likeTotal, isLoged]);
+
+  const sendList_likeVideo = useCallback(
+    async (idVideo) => {
+      const likePerson = isLoged && profileInfoLocal && profileInfoLocal.author;
+      try {
+        const response = await fetch(`http://localhost:8080/likeVideos`, {
+          method: "POST",
+          body: JSON.stringify({ idVideo, likePerson }),
+          headers: { "Content-type": "application/json" },
+        });
+        if (!response.ok) {
+          throw new Error("network response is fail");
+        }
+        const data = await response.json();
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          console.log(data);
+          setLikeTotal((pre) =>
+            pre.map((obj) => {
+              if (obj.idVideo === data._id) {
+                return {
+                  ...obj,
+                  likes: data.likes,
+                  mySelf:
+                    profileInfoLocal &&
+                    data.likeBy.includes(profileInfoLocal.author),
+                };
+              } else return obj;
+            })
+          );
+        }
+      } catch (error) {
+        console.error("Failed to send like videos:", error);
+      }
+    },
+    [isLoged, likeTotal]
+  );
 
   const handleTym = useCallback(
     (idVideo) => {
+      sendList_likeVideo(idVideo);
       if (!isLoged) {
         setIsModelOpen(true);
         return;
@@ -129,14 +194,22 @@ function Home() {
         });
       }
     },
-    [isLoged]
+    [isLoged, likedVideo, likeTotal]
   );
   // Lay list follow
   useEffect(() => {
+    if (!isLoged) {
+      return;
+    }
     try {
-      fetch(`http://localhost:8080/listFollow/${profileInfoLocal.author}`, {
-        headers: { "Content-type": "application/json" },
-      })
+      fetch(
+        `http://localhost:8080/listFollow/${
+          profileInfoLocal && profileInfoLocal.author
+        }`,
+        {
+          headers: { "Content-type": "application/json" },
+        }
+      )
         .then((res) => {
           if (!res.ok) {
             message.error("server bận");
@@ -174,8 +247,15 @@ function Home() {
             Number.parseInt(child.getAttribute("data-index")) ===
             videoHome.ArrayVideos.length - 1
           ) {
-            message.loading("Đang tải thêm video,vui lòng đợi");
-            getVideo();
+            if (videoHome.ArrayVideos.length < 5) {
+              if (videoHome.ArrayVideos.length === 1) {
+                return;
+              }
+              message.info("Đã hết video , Hãy tải thêm video của bạn !");
+            } else {
+              message.loading("Đang tải thêm video,vui lòng đợi");
+              getVideo();
+            }
           }
         }
       });
@@ -209,6 +289,20 @@ function Home() {
       timeoutCLick = null;
     }, 500);
   }
+  //volume
+  const handleVisibleVolume = (e) => {
+    e.stopPropagation();
+    setIsMutedVolume((pre) => !pre);
+  };
+  useEffect(() => {
+    if (timeoutVolume) {
+      clearTimeout(timeoutVolume);
+    }
+    timeoutVolume = setTimeout(() => {
+      setVisibleVolumeBar(false);
+    }, 4000);
+    return () => clearTimeout(timeoutVolume);
+  }, [volume, visibleVolumeBar]);
 
   if (videoHome.ArrayVideos.length === 0) {
     return;
@@ -227,7 +321,8 @@ function Home() {
               className={clsx(Styles.content)}
             >
               <ReactPlayer
-                muted={true}
+                muted={isMutedVolume}
+                volume={volume}
                 playing={currentVideo === index}
                 loop={true}
                 width={"100%"}
@@ -237,9 +332,37 @@ function Home() {
               />
               {currentVideo !== index && (
                 <div className={clsx(Styles.postponeVideo)}>
-                  <PlayCircleOutlined style={{ fontSize: 30 }} />
+                  <PlayCircleOutlined
+                    style={{ height: "100%", width: "100%" }}
+                  />
                 </div>
               )}
+
+              <div className={clsx(Styles.volume)}>
+                {isMutedVolume ? (
+                  <MutedOutlined onClick={(e) => handleVisibleVolume(e)} />
+                ) : (
+                  <div className={clsx(Styles.setVolume)}>
+                    <SoundOutlined
+                      onMouseOver={() => setVisibleVolumeBar(true)}
+                      onClick={(e) => handleVisibleVolume(e)}
+                    />
+                    {visibleVolumeBar && (
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Slider
+                          min={0}
+                          max={1}
+                          step={0.05}
+                          className={clsx(Styles.volumeBar)}
+                          value={volume}
+                          range={false}
+                          onChange={(e) => setVolume(e)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className={clsx(Styles.actionItemContainer)}>
@@ -275,7 +398,7 @@ function Home() {
                 })}
               />
               <p className={clsx(Styles.totalOfLike)}>
-                {likedVideo.includes(video._id) ? video.likes + 1 : video.likes}
+                {likeTotal.find((item) => item.idVideo === video._id)?.likes}
               </p>
 
               <CommentOutlined

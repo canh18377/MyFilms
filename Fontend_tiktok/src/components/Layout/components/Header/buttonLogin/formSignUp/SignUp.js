@@ -12,10 +12,10 @@ function SignUp({ setIsLogIn }) {
       message.warning("Vui lòng nhập đủ thông tin");
       return;
     }
-    if (account.password.length < 8) {
-      message.warning("Mật khẩu phải trên 8 ký tự ");
-      return;
-    }
+    // if (account.password.length < 8) {
+    //   message.warning("Mật khẩu phải trên 8 ký tự ");
+    //   return;
+    // }
     try {
       const response = await fetch("http://localhost:8080/account/create", {
         method: "POST",
@@ -45,7 +45,6 @@ function SignUp({ setIsLogIn }) {
             onChange={(e) => setAccount({ ...account, name: e.target.value })}
             className={clsx(Styles.inputName)}
             placeholder="Account"
-            type="email"
           />
           <input
             value={account.password}

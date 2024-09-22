@@ -12,13 +12,17 @@ import {
   HeartFilled,
   CommentOutlined,
   PlayCircleOutlined,
+  MutedOutlined,
+  SoundOutlined,
 } from "@ant-design/icons";
-import { Avatar, message } from "antd";
+import { Avatar, message, Slider } from "antd";
 import { useNavigate } from "react-router-dom";
 import Styles from "../videos.module.scss";
 import { SharedData } from "../../../Layout/DefaultLayout";
 let timeout;
 let timeoutCLick;
+let timeoutVolume;
+
 const debounce = (callback, delay) => {
   return () => {
     if (timeout) {
@@ -31,7 +35,8 @@ const debounce = (callback, delay) => {
   };
 };
 function Following() {
-  const { isLoged, setIsModelOpen } = useContext(SharedData);
+  const { isLoged, setIsModelOpen, setLikedVideo, likedVideo } =
+    useContext(SharedData);
   const Navigate = useNavigate();
   const videoContainerRef = useRef();
   const [videoUrl, setVideoUrl] = useState([]);
@@ -40,11 +45,15 @@ function Following() {
     ArrayVideos: [],
     infoOwner: [],
   });
-  const [likedVideo, setLikedVideo] = useState([]);
+  const [isMutedVolume, setIsMutedVolume] = useState(true);
+  const [volume, setVolume] = useState(1);
+  const [visibleVolumeBar, setVisibleVolumeBar] = useState(null);
+  const videoLengthRef = useRef(0);
+  const [likeTotal, setLikeTotal] = useState([]);
   const profileInfoLocal = useMemo(() => {
     var profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     return profileInfoLocal;
-  }, []);
+  }, [isLoged]);
 
   useEffect(() => {
     getVideo();
@@ -52,9 +61,9 @@ function Following() {
 
   const getVideo = useCallback(() => {
     let APIUrl = "http://localhost:8080";
-
+    const lastVideo = videoLengthRef.current;
     if (isLoged) {
-      APIUrl = `http://localhost:8080/following/${profileInfoLocal.author}`;
+      APIUrl = `http://localhost:8080/following/${profileInfoLocal.author}/${lastVideo}`;
     }
     fetch(APIUrl, {
       headers: { "Content-type": "application/json" },
@@ -70,12 +79,28 @@ function Following() {
           return;
         }
         console.log(data);
-
+        if (data.Notification) {
+          message.info(data.Notification);
+          return;
+        }
+        if (isLoged) {
+          if (data.ArrayVideos.length === 0) {
+            message.info("Bạn chưa theo dõi ai!!");
+            return;
+          }
+        }
         setVideoFollowing((prev) => ({
           ...prev,
           infoOwner: [...prev.infoOwner, ...data.infoOwner],
           ArrayVideos: [...prev.ArrayVideos, ...data.ArrayVideos],
         }));
+        setLikeTotal((prev) => [
+          ...prev,
+          ...data.ArrayVideos.map((video) => ({
+            idVideo: video._id,
+            likes: video.likes,
+          })),
+        ]);
       })
       .catch((err) => {
         console.log(err);
@@ -83,31 +108,22 @@ function Following() {
       });
   }, [isLoged, videoFollowing.ArrayVideos]);
   useEffect(() => {
+    console.log(videoFollowing.ArrayVideos);
     videoFollowing.ArrayVideos.forEach((video, index) => {
       videoUrl[index] = video.path;
     });
+    console.log(likeTotal);
+    videoLengthRef.current = videoFollowing.ArrayVideos.length;
   }, [videoFollowing.ArrayVideos]);
 
-  useEffect(() => {
-    var likedVideoLocal = localStorage.getItem("likedVideoLocal");
-    if (likedVideoLocal) {
-      likedVideoLocal = JSON.parse(likedVideoLocal);
-    } else {
-      likedVideoLocal = [];
-    }
-    console.log(likedVideoLocal);
-    const formData = new FormData();
-    formData.append("likedVideo", JSON.stringify(likedVideoLocal));
-    formData.append(
-      "persionalLike",
-      JSON.stringify(isLoged && profileInfoLocal.author)
-    );
-
-    const sendList_likeVideo = async () => {
+  const sendList_likeVideo = useCallback(
+    async (idVideo) => {
+      const likePerson = isLoged && profileInfoLocal.author;
       try {
         const response = await fetch(`http://localhost:8080/likeVideos`, {
           method: "POST",
-          body: formData,
+          body: JSON.stringify({ idVideo, likePerson }),
+          headers: { "Content-type": "application/json" },
         });
         if (!response.ok) {
           throw new Error("network response is fail");
@@ -117,20 +133,28 @@ function Following() {
           console.log(data.error);
         } else {
           console.log(data);
-          localStorage.removeItem("likedVideoLocal");
+          console.log(likeTotal);
+          setLikeTotal((pre) =>
+            pre.map((obj) => {
+              if (obj.idVideo === data._id) {
+                return {
+                  ...obj,
+                  likes: data.likes,
+                };
+              } else return obj;
+            })
+          );
         }
       } catch (error) {
         console.error("Failed to send like videos:", error);
       }
-    };
-    sendList_likeVideo();
-  }, []);
+    },
+    [isLoged, likeTotal]
+  );
 
-  useEffect(() => {
-    localStorage.setItem("likedVideoLocal", JSON.stringify(likedVideo));
-  }, [likedVideo]);
   const handleTym = useCallback(
     (idVideo) => {
+      sendList_likeVideo(idVideo);
       if (!isLoged) {
         setIsModelOpen(true);
         return;
@@ -159,8 +183,18 @@ function Following() {
             Number.parseInt(child.getAttribute("data-index")) ===
             videoFollowing.ArrayVideos.length - 1
           ) {
-            message.loading("Đang tải thêm video,vui lòng đợi");
-            getVideo();
+            if (
+              videoFollowing.ArrayVideos.length < 5 &&
+              videoFollowing.ArrayVideos.length > 0
+            ) {
+              if (videoFollowing.ArrayVideos.length === 1) {
+                return;
+              }
+              message.info("Đã hết video , Hãy theo dõi thêm!!");
+            } else {
+              message.loading("Đang tải thêm video,vui lòng đợi");
+              getVideo();
+            }
           }
         }
       });
@@ -193,6 +227,20 @@ function Following() {
       timeoutCLick = null;
     }, 500);
   }
+  //volume
+  const handleVisibleVolume = (e) => {
+    e.stopPropagation();
+    setIsMutedVolume((pre) => !pre);
+  };
+  useEffect(() => {
+    if (timeoutVolume) {
+      clearTimeout(timeoutVolume);
+    }
+    timeoutVolume = setTimeout(() => {
+      setVisibleVolumeBar(false);
+    }, 4000);
+    return () => clearTimeout(timeoutVolume);
+  }, [volume, visibleVolumeBar]);
 
   if (videoFollowing.length === 0) {
     return;
@@ -223,6 +271,31 @@ function Following() {
                   <PlayCircleOutlined style={{ fontSize: 30 }} />
                 </div>
               )}
+              <div className={clsx(Styles.volume)}>
+                {isMutedVolume ? (
+                  <MutedOutlined onClick={(e) => handleVisibleVolume(e)} />
+                ) : (
+                  <div className={clsx(Styles.setVolume)}>
+                    <SoundOutlined
+                      onMouseOver={() => setVisibleVolumeBar(true)}
+                      onClick={(e) => handleVisibleVolume(e)}
+                    />
+                    {visibleVolumeBar && (
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Slider
+                          min={0}
+                          max={1}
+                          step={0.05}
+                          className={clsx(Styles.volumeBar)}
+                          value={volume}
+                          range={false}
+                          onChange={(e) => setVolume(e)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className={clsx(Styles.actionItemContainer)}>
@@ -244,7 +317,7 @@ function Following() {
                 })}
               />
               <p className={clsx(Styles.totalOfLike)}>
-                {likedVideo.includes(video._id) ? video.likes + 1 : video.likes}
+                {likeTotal.find((item) => item.idVideo === video._id)?.likes}
               </p>
 
               <CommentOutlined

@@ -15,6 +15,10 @@ function ContinuteNumber({
 
   const HandleSubmit = async (event) => {
     event.preventDefault();
+    if (account.name.trim() === "" || account.password.trim() === "") {
+      message.error("Hãy nhập đầy đủ thông tin");
+      return;
+    }
     const APIUser = "http://localhost:8080/account";
     try {
       const response = await fetch(APIUser, {

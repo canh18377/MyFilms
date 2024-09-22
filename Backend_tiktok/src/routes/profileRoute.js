@@ -29,4 +29,6 @@ router.get("/:author", ProfileController.index);
 router.get("/getFollowList/:author/:isFollow", ProfileController.getFollowList);
 router.delete("/deleteVideo", ProfileController.deleteVideo);
 router.put("/updateVideo", ProfileController.updateVideo);
+router.delete("/deleteFollowing", ProfileController.deleteFollowing);
+
 module.exports = router;

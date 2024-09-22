@@ -65,7 +65,7 @@ function PagePersional({ setIsLoged, profileInfo }) {
       >
         <Avatar
           className={clsx(Styles.avatarHeader)}
-          src={profileInfo.profilePhoto && profileInfo.profilePhoto.path}
+          src={profileInfoLocal && profileInfoLocal.profilePhoto.path}
         />
       </Tippy>
     </div>

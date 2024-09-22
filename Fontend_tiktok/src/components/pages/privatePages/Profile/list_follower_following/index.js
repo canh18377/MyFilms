@@ -1,9 +1,9 @@
-import { Col, Modal } from "antd";
+import { Modal } from "antd";
 import { SharedData } from "../../../../Layout/DefaultLayout";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { message, Avatar } from "antd";
-import { FrownOutlined } from "@ant-design/icons";
+import { FrownOutlined, CloseOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import Styles from "./list_follower_following.module.scss";
 function List_Follower_Following() {
@@ -11,10 +11,8 @@ function List_Follower_Following() {
   const { profileInfo } = useContext(SharedData);
   const [followList, setFollowList] = useState([]);
   const [openModalFollowList, setOpenModalFollowList] = useState(false);
-  const [totaOfFollow, setTotalOfFollow] = useState({
-    follower: 0,
-    follwing: 0,
-  });
+  const [isFollow, setIsFollow] = useState();
+  var profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
   console.log(profileInfo);
   const getFollowList = async (isFollow) => {
     try {
@@ -35,6 +33,39 @@ function List_Follower_Following() {
         console.log(data);
         setFollowList(data);
         setOpenModalFollowList(true);
+        setIsFollow(isFollow);
+      }
+    } catch (error) {
+      message.error("server bận");
+      console.log(error);
+    }
+  };
+  const deleteFollowing = async (followingPerson) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/profile/deleteFollowing`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            followingPerson,
+            user: profileInfoLocal.author,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error`);
+      }
+      const data = await response.json();
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data);
+        setFollowList(
+          followList.filter((user) => user.author !== followingPerson)
+        );
+        message.success(data);
       }
     } catch (error) {
       message.error("server bận");
@@ -63,12 +94,24 @@ function List_Follower_Following() {
               followList.map((user, index) => {
                 return (
                   <div
-                    onClick={() => handleClickUser(user.author)}
-                    className={clsx(Styles.user)}
+                    style={{ display: "flex", alignItems: "center" }}
                     key={index}
                   >
-                    <Avatar src={user.profilePhoto.path} size={30} />
-                    <p>{user.name}</p>
+                    <div
+                      onClick={() => handleClickUser(user.author)}
+                      className={clsx(Styles.user)}
+                    >
+                      <Avatar src={user.profilePhoto.path} size={30} />
+                      <p>{user.name}</p>
+                    </div>
+                    {profileInfoLocal &&
+                      isFollow === "isFollowing" &&
+                      profileInfoLocal.author === profileInfo.author && (
+                        <CloseOutlined
+                          onClick={() => deleteFollowing(user.author)}
+                          className={clsx(Styles.deleteFollow)}
+                        />
+                      )}
                   </div>
                 );
               })

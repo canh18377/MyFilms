@@ -2,8 +2,8 @@ const UserVideos = require("../models/UserVideos");
 const ProfileUse = require("../models/ProfileUser");
 const LikedVideos = require("../models/LikedVideos");
 const List_Follow = require("../models/List_Follow");
-const { ObjectId } = require("mongodb");
-
+const mongoose = require("mongoose");
+const { ObjectId } = require("mongoose").Types;
 class SiteController {
   async home(req, res) {
     try {
@@ -48,6 +48,37 @@ class SiteController {
       console.log(error);
     }
   }
+  async getVideoTym(req, res) {
+    console.log("get list:", req.params);
+    let ArrayVideoId = req.params.idVideo.split(",");
+    ArrayVideoId = ArrayVideoId.map((id) => new ObjectId(id));
+    console.log(ArrayVideoId);
+    try {
+      const video = await UserVideos.aggregate([
+        {
+          $match: { _id: { $in: ArrayVideoId } },
+        },
+        {
+          // Tạo thêm trường tạm 'order' để lưu vị trí của ID trong ArrayVideoId
+          $addFields: {
+            order: { $indexOfArray: [ArrayVideoId, "$_id"] },
+          },
+        },
+        {
+          // Sắp xếp kết quả theo trường 'order'
+          $sort: { order: 1 },
+        },
+      ]);
+      if (!video) {
+        res.json({ error: "Not found Video" });
+        return;
+      }
+      console.log("video::::", video);
+      res.json(video);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async following(req, res) {
     console.log("get following", req.params);
@@ -60,21 +91,34 @@ class SiteController {
         res.json({ Notification: "Bạn chưa theo dõi ai cả." });
         return;
       }
+      if (response.following.length === 0) {
+        res.json({ Notification: "Bạn chưa theo dõi ai cả." });
+        return;
+      }
       const listFollow = response.following.map((id) => new ObjectId(id));
+
+      let condition = {
+        deleteAt: null,
+        author: { $in: listFollow },
+      };
+
       const followingUserVideos = await UserVideos.aggregate([
         {
-          $match: {
-            deleteAt: null,
-            author: { $in: listFollow },
-          },
+          $match: condition,
         },
         {
-          $sample: {
-            size: 10,
-          },
+          $sort: { createdAt: -1 },
+        },
+        { $skip: Number.parseInt(req.params.lastVideo) },
+        {
+          $limit: 5, // Lấy 5 video đầu tiên
         },
       ]);
       console.log("followingUserVideos", followingUserVideos);
+      if (followingUserVideos.length === 0) {
+        res.json({ Notification: "Đã hết video , Hãy theo dõi thêm!" });
+        return;
+      }
       const authors = followingUserVideos.map((video) => video.author);
       //tim owner  of video
       const profileOwner = await ProfileUse.find({ author: { $in: authors } });
@@ -95,30 +139,48 @@ class SiteController {
   async likeVideos(req, res) {
     console.log("liked video:", req.body);
     try {
-      const response = await UserVideos.updateMany(
-        { _id: { $in: JSON.parse(req.body.likedVideo) } },
-        { $inc: { likes: 1 } }
+      let response = await UserVideos.findOneAndUpdate(
+        {
+          _id: new mongoose.Types.ObjectId(req.body.idVideo), // Tìm video theo ID
+          likeBy: new mongoose.Types.ObjectId(req.body.likePerson), // Kiểm tra nếu user đã like video
+        },
+        {
+          $pull: { likeBy: new mongoose.Types.ObjectId(req.body.likePerson) }, // Bỏ user khỏi danh sách liked
+          $inc: { likes: -1 }, // Giảm số lượt like
+        },
+        { new: true } // Trả về tài liệu đã cập nhật
       );
+
+      if (!response) {
+        response = await UserVideos.findOneAndUpdate(
+          {
+            _id: new mongoose.Types.ObjectId(req.body.idVideo), // Tìm video theo ID
+          },
+          {
+            $push: { likeBy: new mongoose.Types.ObjectId(req.body.likePerson) },
+            $inc: { likes: 1 },
+          },
+          { new: true } // Trả về tài liệu đã cập nhật
+        );
+        console.log("res", response);
+      }
+      console.log("res", response);
+      // them vao liked Video profile
       const response2 = await LikedVideos.findOneAndUpdate(
         {
-          author: JSON.parse(req.body.persionalLike),
+          author: new mongoose.Types.ObjectId(req.body.likePerson),
         },
         {
           $addToSet: {
-            likedVideos: { $each: JSON.parse(req.body.likedVideo) },
+            likedVideos: req.body.idVideo,
           },
         },
-        { new: true }
+        { new: true, upsert: true }
       );
       console.log("cac video da like", response2);
-      if (!response2) {
-        await LikedVideos.create({
-          author: JSON.parse(req.body.persionalLike),
-          likedVideos: JSON.parse(req.body.likedVideo),
-        });
-      }
+
       if (response) {
-        res.json({ success: "update successfully" });
+        res.json(response);
       } else res.json({ error: "failure update" });
     } catch (error) {
       console.log(error);

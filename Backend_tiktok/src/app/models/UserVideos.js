@@ -11,6 +11,7 @@ const UserVideos = new Schema(
     genres: { type: [String], default: [] },
     author: { type: Schema.Types.ObjectId, ref: "Profile" },
     likes: { type: Number, default: 0 },
+    likeBy: [{ type: Schema.Types.ObjectId, ref: "Profile" }],
     deleteAt: { type: Date, default: null },
   },
   { timestamps: true }

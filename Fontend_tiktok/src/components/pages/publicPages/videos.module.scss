@@ -32,9 +32,27 @@
 }
 .postponeVideo {
   position: absolute;
+  top: 40%;
+  right: 45%;
+  color: rgb(47, 40, 40);
+  font-size: 40px;
+}
+.volume {
+  position: absolute;
   top: 0;
+  left: 6px;
+  color: rgb(116, 114, 114);
+  font-size: 20px;
+}
+.volumeBar {
+  width: 80px;
+  color: black;
 }
 
+.setVolume {
+  display: flex;
+  align-items: center;
+}
 .container::-webkit-scrollbar {
   height: 0;
 }

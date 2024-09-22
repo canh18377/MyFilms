@@ -7,7 +7,7 @@ const UploadVideo = () => {
   const [infoVideoUpload, setInforVideoUpload] = useState({
     fileVideo: "",
     nameVideo: "",
-    limitedAge: "0-9",
+    limitedAge: "tất cả các độ tuổi",
   });
   const [genres, setGenre] = useState(["Video"]);
   const [previewVideo, setPreviewVideo] = useState("");

@@ -50,7 +50,7 @@ function Header() {
     <div className={clsx(Styles.header)}>
       <div onClick={() => handleNavigate()} className={clsx(Styles.logoHeader)}>
         <TikTokOutlined className={clsx(Styles.iconHeader)} />
-        <u className={clsx(Styles.logoText)}>MyFilms</u>
+        <strong className={clsx(Styles.logoText)}>MyFilms</strong>
       </div>
       <Tippy
         interactive={true}

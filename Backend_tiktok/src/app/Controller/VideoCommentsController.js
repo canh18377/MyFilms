@@ -16,7 +16,7 @@ class VideoCommentsController {
       //lấy ra comments của video
       const videocomments = await VideoComments.find({
         idVideo: req.params.idVideo,
-      });
+      }).sort({ createdAt: -1 });
       console.log("comment video:", videocomments);
       res.json({
         video: video,

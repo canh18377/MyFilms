@@ -20,7 +20,8 @@
   border-bottom: 1px solid black;
 }
 .content {
-  height: 100vh;
+  height: calc(100vh - 104px);
+  overflow-y: auto;
 }
 //mobile
 @media screen and (max-width: 768px) {

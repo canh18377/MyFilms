@@ -13,12 +13,21 @@
   margin-bottom: 0.7rem;
   box-sizing: border-box;
   cursor: pointer;
+  animation: changeColor 2s 1s infinite ease-in-out;
 }
 .logoText {
   width: 40%;
-  color: rgb(84, 205, 205);
   margin-top: 1.5rem;
   font-size: 15px;
+  animation: changeColor 2s 1s infinite ease-in-out;
+}
+@keyframes changeColor {
+  0% {
+    color: rgb(234, 42, 42);
+  }
+  100% {
+    color: rgb(17, 143, 84);
+  }
 }
 
 .searchHeader {

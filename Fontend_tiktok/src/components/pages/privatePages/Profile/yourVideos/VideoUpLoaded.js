@@ -15,7 +15,6 @@ function VideoUpLoaded({ author }) {
   const [isOpenTool, setIsOpenTool] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [playVideo, setPlayVideo] = useState(null);
-
   useEffect(() => {
     profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     fetch(`http://localhost:8080/profile/videos/${author}`, {
@@ -30,6 +29,7 @@ function VideoUpLoaded({ author }) {
       .then((data) => {
         setVideos(data);
         console.log("video:", data);
+
         setIsLoading(false);
       })
       .catch((err) => {

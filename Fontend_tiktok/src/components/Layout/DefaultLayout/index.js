@@ -8,12 +8,23 @@ function DefaultLayout({ children }) {
   const [contentSearch, setContentSearch] = useState("");
   const [history, setHistory] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isLoged, setIsLoged] = useState(() => {
+    const token = localStorage.getItem("jwtToken");
+    return !!token;
+  });
   const [profileInfo, setProfileInfo] = useState(() => {
     const savedDataProfile = localStorage.getItem("profileInfo");
     return savedDataProfile
       ? JSON.parse(savedDataProfile)
       : { profilePhoto: "", videos: "", name: "", caption: "", author: "" };
   });
+  const [likedVideo, setLikedVideo] = useState([]);
+
+  useEffect(() => {
+    if (!isLoged) {
+      setLikedVideo([]);
+    }
+  }, [isLoged]);
   useEffect(() => {
     const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
     if (profileInfoLocal) {
@@ -23,10 +34,6 @@ function DefaultLayout({ children }) {
       }
     }
   }, [profileInfo]);
-  const [isLoged, setIsLoged] = useState(() => {
-    const token = localStorage.getItem("jwtToken");
-    return !!token;
-  });
 
   return (
     <SharedData.Provider
@@ -35,6 +42,8 @@ function DefaultLayout({ children }) {
         setContentSearch,
         history,
         setHistory,
+        likedVideo,
+        setLikedVideo,
         setIsModelOpen,
         isModelOpen,
         isLoged,

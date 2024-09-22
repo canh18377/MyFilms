@@ -5,6 +5,7 @@ const UserVideos = require("../models/UserVideos");
 const Videos = require("../models/UserVideos");
 const LikedVideos = require("../models/LikedVideos");
 const List_Follow = require("../models/List_Follow");
+const { default: mongoose } = require("mongoose");
 
 class ProfileController {
   async index(req, res) {
@@ -135,6 +136,32 @@ class ProfileController {
       console.log(error);
     }
   }
+  async deleteFollowing(req, res) {
+    console.log(req.body);
+
+    const user = new mongoose.Types.ObjectId(req.body.user);
+    console.log(user);
+
+    try {
+      const response = await List_Follow.findOneAndUpdate(
+        { user: user },
+        {
+          $pull: { following: req.body.followingPerson },
+        },
+        {
+          new: true,
+        }
+      );
+      if (response) {
+        res.json("Đã xóa!");
+      } else res.json({ error: "Có lỗi xảy ra , thử lại sau ít phút" });
+      console.log("líst follow:", response);
+    } catch (error) {
+      res.json({ error: "Có lỗi xảy ra , thử lại sau ít phút" });
+      console.log(error);
+    }
+  }
+
   async getFollowList(req, res) {
     console.log(req.params);
     try {

@@ -39,7 +39,10 @@
   color: rgb(79, 79, 14);
   height: 20px;
 }
-
+.currentUser_Img {
+  display: flex;
+  flex-direction: column;
+}
 .commenterName {
   font-size: small;
   width: 50px;
