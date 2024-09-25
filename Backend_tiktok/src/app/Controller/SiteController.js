@@ -166,18 +166,34 @@ class SiteController {
       }
       console.log("res", response);
       // them vao liked Video profile
-      const response2 = await LikedVideos.findOneAndUpdate(
-        {
-          author: new mongoose.Types.ObjectId(req.body.likePerson),
-        },
-        {
-          $addToSet: {
-            likedVideos: req.body.idVideo,
+
+      const response2 = await LikedVideos.findOne({
+        author: new mongoose.Types.ObjectId(req.body.likePerson),
+      });
+
+      let ArrayVideoLiked;
+
+      if (response2 && response2.likedVideos.includes(req.body.idVideo)) {
+        // Nếu video đã tồn tại trong likedVideos, xóa nó
+        ArrayVideoLiked = await LikedVideos.findOneAndUpdate(
+          {
+            author: new mongoose.Types.ObjectId(req.body.likePerson),
           },
-        },
-        { new: true, upsert: true }
-      );
-      console.log("cac video da like", response2);
+          { $pull: { likedVideos: req.body.idVideo } }, // Xóa video khỏi likedVideos
+          { new: true, upsert: true }
+        );
+      } else {
+        // Nếu video chưa có, thêm nó vào likedVideos
+        ArrayVideoLiked = await LikedVideos.findOneAndUpdate(
+          {
+            author: new mongoose.Types.ObjectId(req.body.likePerson),
+          },
+          { $push: { likedVideos: req.body.idVideo } }, // Thêm video vào likedVideos
+          { new: true, upsert: true }
+        );
+      }
+
+      console.log("cac video da like", ArrayVideoLiked);
 
       if (response) {
         res.json(response);
