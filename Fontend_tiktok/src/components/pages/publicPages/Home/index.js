@@ -290,10 +290,13 @@ function Home() {
     }, 500);
   }
   //volume
-  const handleVisibleVolume = (e) => {
-    e.stopPropagation();
-    setIsMutedVolume((pre) => !pre);
-  };
+  const handleVisibleVolume = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setIsMutedVolume((pre) => !pre);
+    },
+    [isMutedVolume]
+  );
   useEffect(() => {
     if (timeoutVolume) {
       clearTimeout(timeoutVolume);
