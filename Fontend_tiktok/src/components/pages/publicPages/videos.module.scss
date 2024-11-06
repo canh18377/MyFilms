@@ -84,7 +84,7 @@
 .follow_followed {
   position: absolute;
   top: 30px;
-  margin-left: 16px;
+  margin-left: 14px;
 }
 .follwing {
   color: whitesmoke;
@@ -130,35 +130,35 @@
     background-color: red;
     box-shadow: 0 0 2px rgb(56, 116, 85);
     border-radius: 50%;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
   .followed {
     color: rgb(228, 65, 16);
     box-shadow: 0 0 2px rgb(56, 116, 85);
     border-radius: 50%;
     background-color: rgb(244, 248, 244);
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
   .avatar {
-    height: 5rem;
-    width: 5rem;
+    height: 4rem;
+    width: 4rem;
     font-size: small;
     box-shadow: 0 0 2px black;
     cursor: pointer;
   }
   .follow_followed {
     position: absolute;
-    top: 53px;
-    margin-left: 24px;
+    top: 40px;
+    margin-left: 15px;
   }
   .commentVideo,
   .heartVideo {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     cursor: pointer;
   }
   .totalOfLike {
-    font-size: 2rem;
-    margin: 8px;
+    font-size: 1.5rem;
+    margin: 8 7 8 8px;
   }
   .actionItemContainer {
     display: grid;

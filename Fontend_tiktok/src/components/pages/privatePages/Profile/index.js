@@ -12,7 +12,7 @@ import List_Follower_Following from "./list_follower_following";
 function Profile() {
   const { author } = useParams();
   const [videoCategory, setVideoCategory] = useState("Videos");
-  const { profileInfo, setProfileInfo } = useContext(SharedData);
+  const { profileInfo, setProfileInfo, setIsLoged } = useContext(SharedData);
   const [stateLoading, setStateLoading] = useState(true);
   console.log("author", author);
   useEffect(() => {
@@ -83,6 +83,7 @@ function Profile() {
             <FormUpdate
               profileInfo={profileInfo}
               setProfileInfo={setProfileInfo}
+              setIsLoged={setIsLoged}
             />
           </div>
         </div>

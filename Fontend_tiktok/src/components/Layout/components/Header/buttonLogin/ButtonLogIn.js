@@ -44,32 +44,32 @@ function ButtonLogIn({
             <div className={clsx(Styles.selects)}>
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />{" "}
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />{" "}
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />{" "}
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />{" "}
               <Select
                 onclick={() => setIsOpenLogIn(true)}
-                url="https://th.bing.com/th/id/OIP.wsWs8WcLQEFtdN_yZ5uQvwHaGc?w=186&h=162&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+                url="/avatarLogin.jpg"
                 content="UsePhone/Email/Username"
               />
             </div>

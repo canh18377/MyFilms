@@ -5,7 +5,6 @@ const UserVideos = require("../models/UserVideos");
 const Videos = require("../models/UserVideos");
 const LikedVideos = require("../models/LikedVideos");
 const List_Follow = require("../models/List_Follow");
-const { default: mongoose } = require("mongoose");
 
 class ProfileController {
   async index(req, res) {
@@ -20,7 +19,7 @@ class ProfileController {
       console.log(error);
     }
   }
-  async updateProflie(req, res) {
+  async updateProfile(req, res) {
     try {
       //xác thực tài khoản
       const response = await jwtActions.verifyToken(req.headers.authorization);
@@ -28,7 +27,14 @@ class ProfileController {
       console.log("ressposne", response);
 
       //tìm tài khoản
-      const account = await Account.findOne({ name: response.name });
+      const account = await Account.findOne({
+        name: response ? response.name : "",
+      });
+      //xac thuc ton tai
+      if (!account) {
+        res.json({ errorToken: "errorToken" });
+        return;
+      }
       const updateData = {};
 
       // Kiểm tra và thêm profilePhoto nếu req.file tồn tại

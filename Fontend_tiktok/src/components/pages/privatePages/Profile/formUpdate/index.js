@@ -1,15 +1,16 @@
 import { Modal, Button, Avatar, message } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import Styles from "./formUpdate.module.scss";
 
-function FormUpdate({ profileInfo, setProfileInfo }) {
+function FormUpdate({ profileInfo, setProfileInfo, setIsLoged }) {
   const Token = JSON.parse(localStorage.getItem("jwtToken"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState("");
   const profileInfoLocal = JSON.parse(localStorage.getItem("profileInfo"));
-
+  const navigate = useNavigate();
   const handleSubmit = () => {
     let formData = new FormData();
     formData.append("profilePhoto", profileInfo.profilePhoto);
@@ -28,6 +29,13 @@ function FormUpdate({ profileInfo, setProfileInfo }) {
         } else return res.json();
       })
       .then((data) => {
+        if (data.errorToken) {
+          message.warning("Có lỗi xảy ra , Hãy đăng nhập lại");
+          localStorage.removeItem("jwtToken");
+          setIsLoged(false);
+          navigate("/");
+          return;
+        }
         setProfileInfo(data.Profile);
         if (data.newToken) {
           localStorage.setItem("jwtToken", JSON.stringify(data.newToken));

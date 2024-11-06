@@ -21,7 +21,7 @@ var upload = multer({ storage: storage });
 router.put(
   "/update",
   upload.single("profilePhoto"),
-  ProfileController.updateProflie
+  ProfileController.updateProfile
 );
 router.get("/videos/:author", ProfileController.getVideo);
 router.get("/likedVideos/:author", ProfileController.getLikedVideos);

@@ -10,8 +10,7 @@ const Profile = new Schema({
     filename: { type: String, default: "" },
     path: {
       type: String,
-      default:
-        "https://th.bing.com/th?id=OIP.a-9CR_bvpqQL9yYQ7glIJwHaJw&w=217&h=286&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2",
+      default: "http://localhost:8080/uploads/images/DefaultAvatar.png",
     },
   },
   videos: [{ type: Schema.Types.ObjectId, ref: "UserVideos" }],
