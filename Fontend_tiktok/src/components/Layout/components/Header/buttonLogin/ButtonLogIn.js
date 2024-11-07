@@ -21,7 +21,7 @@ function ButtonLogIn({
     setIsOpenLogIn(false);
     setIsModelOpen(false);
     notification.success({
-      description: "welcom to tiktok",
+      description: "welcom to MyFilms",
       duration: 2.5,
       showProgress: true,
       placement: "topRight",
