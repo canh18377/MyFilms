@@ -32,6 +32,7 @@ function FormUpdate({ profileInfo, setProfileInfo, setIsLoged }) {
         if (data.errorToken) {
           message.warning("Có lỗi xảy ra , Hãy đăng nhập lại");
           localStorage.removeItem("jwtToken");
+          localStorage.removeItem("profileInfo");
           setIsLoged(false);
           navigate("/");
           return;

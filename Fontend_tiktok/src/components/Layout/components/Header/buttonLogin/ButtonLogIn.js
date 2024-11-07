@@ -39,7 +39,7 @@ function ButtonLogIn({
         >
           <div className={clsx(Styles.contentLogIn)}>
             <div>
-              <h1>Log in to TikTok</h1>
+              <h1>Log in to MyFilms</h1>
             </div>
             <div className={clsx(Styles.selects)}>
               <Select
