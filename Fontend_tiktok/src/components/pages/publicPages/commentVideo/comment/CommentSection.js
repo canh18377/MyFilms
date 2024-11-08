@@ -11,7 +11,6 @@ function CommentSection({
   avaiable,
   profileLocalstorage,
   setIsReload,
-  setvideo_Owner_CommentsInfo,
 }) {
   const like_disLike_List_Ref = useRef();
   const Navigate = useNavigate();
@@ -122,7 +121,7 @@ function CommentSection({
             />
 
             <Button htmlType="submit" className={clsx(Styles.post)}>
-              Post
+              Add
             </Button>
           </form>
         </div>

@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import clsx from "clsx";
 import Styles from "./actionComment.module.scss";
-import { useState } from "react";
+import { useState, memo, useEffect } from "react";
 import { message, Modal } from "antd";
 
 function ActionComment({
@@ -22,13 +22,18 @@ function ActionComment({
   const [isModalDeleteComment, setIsModalDeleteComment] = useState(false);
   const [isModalUpdateComment, setIsModalUpdateComment] = useState(false);
   const [commentContent, setCommentContent] = useState(contentComment);
-
+  console.log(commentContent);
   const [islogged, setIsLogged] = useState(() => {
     if (localStorage.getItem("profileInfo")) {
       return true;
     } else return false;
   });
 
+  useEffect(() => {
+    if (isModalUpdateComment) {
+      setCommentContent(contentComment);
+    }
+  }, [isModalUpdateComment]);
   const deleteComment = async () => {
     if (!idComment) {
     }
@@ -218,4 +223,4 @@ function ActionComment({
   );
 }
 
-export default ActionComment;
+export default memo(ActionComment);
